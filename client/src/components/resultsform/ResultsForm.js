@@ -7,12 +7,12 @@ const ResultsForm = (props) => {
   const onSubmit = (formProps) => {
     props.newSession(formProps)
   }
-  console.log(props.stake, props.venue, props.limit, props.buyin, props.game)
   return (
     <div>
       <form onSubmit={props.handleSubmit(onSubmit)}>
         <label htmlFor="stake">Stake</label>
         <Field name="stake" component="select">
+          <option></option>
           <option value="0.01_0.02">0.01/0.02</option>
           <option value="0.02_0.05">0.02/0.05</option>
           <option value="0.05_0.10">0.05/0.10</option>
