@@ -9,19 +9,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-let connection = mysql.createConnection({
+let pool = mysql.createPool({
+  connectionLimit: 10,
   host: 'localhost',
   user: 'root',
   password: '',
   database: 'poker_tracker'
 });
 
-connection.connect(err => {
-  if (err) {
-    return console.error(`Error: ${err.message}`)
-  };
-  console.log('Connected to MySQL');
-});
+// connection.connect(err => {
+//   if (err) {
+//     return console.error(`Error: ${err.message}`)
+//   };
+//   console.log('Connected to MySQL');
+// });
 
 app.use('/api/sessions', sessions);
 
@@ -30,4 +31,4 @@ app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 });
 
-module.exports = connection;
+module.exports = pool;

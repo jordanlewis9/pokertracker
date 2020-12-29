@@ -5,7 +5,8 @@ import * as actions from '../../actions';
 
 const ResultsForm = (props) => {
   const onSubmit = (formProps) => {
-    props.newSession(formProps)
+    console.log(formProps);
+    props.newSession(formProps);
   }
   return (
     <div>
@@ -27,8 +28,8 @@ const ResultsForm = (props) => {
           <option value="25_50">25/50</option>
           <option value="50_100">50/100</option>
         </Field>
-        <label htmlFor="limit">Limit</label>
-        <Field name="limit" component="select">
+        <label htmlFor="limit_type">Limit</label>
+        <Field name="limit_type" component="select">
           <option value="No Limit">No Limit</option>
           <option value="Pot Limit">Pot Limit</option>
           <option value="Fixed Limit">Fixed Limit</option>
@@ -53,8 +54,11 @@ const ResultsForm = (props) => {
         <Field name="buyin" component="input" type="text" />
         <label htmlFor="cashout">Cash-Out</label>
         <Field name="cashout" component="input" type="text" />
-        <label htmlFor="timeLength">Time Length</label>
-        <Field name="timeLength" component="input" type="text" placeholder="hh:mm" />
+        <label htmlFor="date_play">Date</label>
+        <Field name="date_play" component="input" type="date" />
+        <label htmlFor="time_length">Time Length</label>
+        <Field name="time_length" component="input" type="text" placeholder="hh:mm" />
+        <Field name="user_id" component="input" type="text" />
         <button>Submit</button>
       </form>
     </div>
@@ -63,11 +67,11 @@ const ResultsForm = (props) => {
 
 function mapStateToProps(state) {
   const selector = formValueSelector('newSession');
-  const { stake, venue, limit, buyin, game } = selector(state, 'stake', 'venue', 'limit', 'buyin', 'game')
-  return { stake, venue, limit, buyin, game }
+  const { stake, venue, limit_type, buyin, game, date_play } = selector(state, 'stake', 'venue', 'limit_type', 'buyin', 'game', 'date_play')
+  return { stake, venue, limit_type, buyin, game, date_play }
 };
 
 export default compose(
   connect(mapStateToProps, actions),
-  reduxForm({ form: 'newSession', initialValues: { limit: 'No Limit', game: 'Hold Em'}})
+  reduxForm({ form: 'newSession', initialValues: { limit_type: 'No Limit', game: 'Hold Em'}})
 )(ResultsForm);
