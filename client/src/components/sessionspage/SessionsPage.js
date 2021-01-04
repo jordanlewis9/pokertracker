@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Session from './Session';
 
-const ResultsPage = () => {
+const SessionsPage = () => {
   const [sessions, setSessions] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -16,21 +17,18 @@ const ResultsPage = () => {
     };
     fetchData();
   }, [])
-  const renderResults = sessions.map(session => {
+  const renderSessions = sessions.map(session => {
+    const { stake, limit_type, game, venue, played_date, time_length, profit } = session;
     return (
-      <div>
-        <h2>{session.stake.replace("_", "/")} {session.limit_type} {session.game}</h2>
-        <h2>{session.venue}</h2>
-        <h6>{session.played_date} for {session.time_length} hours</h6>
-        <h4>{session.profit}</h4>
-      </div>
+      <Session key={session.id} stake={stake} limit_type={limit_type} game={game} venue={venue} played_date={played_date}
+      time_length={time_length} profit={profit} />
     )
   })
   return (
     <div>
-      {renderResults || 'Loading...'}
+      {renderSessions ?? 'Loading...'}
     </div>
   )
 };
 
-export default ResultsPage;
+export default SessionsPage;
