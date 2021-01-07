@@ -1,3 +1,5 @@
+// Tally all of a user's results
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 

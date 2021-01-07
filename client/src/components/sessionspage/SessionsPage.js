@@ -1,3 +1,5 @@
+// Display all of the user's sessions
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Session from './Session';
@@ -18,9 +20,9 @@ const SessionsPage = () => {
     fetchData();
   }, [])
   const renderSessions = sessions.map(session => {
-    const { stake, limit_type, game, venue, played_date, time_length, profit } = session;
+    const { stake, limit_type, game, venue, played_date, time_length, profit, id } = session;
     return (
-      <Session key={session.id} stake={stake} limit_type={limit_type} game={game} venue={venue} played_date={played_date}
+      <Session key={session.id} id={id} stake={stake} limit_type={limit_type} game={game} venue={venue} played_date={played_date}
       time_length={time_length} profit={profit} />
     )
   })

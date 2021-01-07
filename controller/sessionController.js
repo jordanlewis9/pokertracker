@@ -19,4 +19,15 @@ router.post('/new', (req, res) => {
   })
 })
 
+router.delete('/delete/:session_id', (req, res) => {
+  console.log(req.params.session_id);
+  const deleteSession = `DELETE FROM sessions WHERE id = ${req.params.session_id}`;
+  pool.query(deleteSession, function(err, results){
+    if (err) throw err;
+    res.status(200).json({
+      status: 'success'
+    })
+  })
+})
+
 module.exports = router;
