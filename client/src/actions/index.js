@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { NEW_SESSION } from './types';
+import { NEW_SESSION, GET_SESSION } from './types';
+import { timeIntToStr } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps) => async (dispatch) => {
   const formattedLength = formProps.time_length.split(":").map(el => parseInt(el));
@@ -19,3 +20,17 @@ export const newSession = (formProps) => async (dispatch) => {
     console.log(err);
   }
 };
+
+export const getSession = (sessionId) => async (dispatch) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/api/sessions/${sessionId}`);
+    console.log(response);
+    response.data.time_length = timeIntToStr(response.data.time_length);
+    dispatch({
+      type: GET_SESSION,
+      payload: response.data
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}

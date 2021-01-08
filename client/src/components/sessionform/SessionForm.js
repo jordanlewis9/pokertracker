@@ -5,8 +5,8 @@ import * as actions from '../../actions';
 
 const ResultsForm = (props) => {
   const onSubmit = (formProps) => {
-    console.log(formProps);
     props.newSession(formProps);
+    props.history.push('/sessions');
   }
   return (
     <div>

@@ -1,9 +1,9 @@
-import { NEW_SESSION } from '../actions/types';
+import { GET_SESSION } from '../actions/types';
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case NEW_SESSION:
-      return {...state, form: action.payload};
+    case GET_SESSION:
+      return {...state, editFormValues: action.payload};
     default:
       return state;
   }

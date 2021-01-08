@@ -5,7 +5,24 @@ router.get('/', (req, res) => {
   const getSessions = `SELECT *, DATE_FORMAT(date_play, '%m/%d/%Y') as played_date FROM sessions WHERE user_id = 1 ORDER BY date_play`;
   pool.query(getSessions, function(err, results){
     if (err) throw err;
-    res.send(results);
+    res.status(200).send(results);
+  })
+})
+
+router.get('/:id', (req, res) => {
+  const getSession = `SELECT * FROM sessions WHERE id = ${req.params.id}`;
+  pool.query(getSession, function(err, results){
+    if (err) throw err;
+    console.log(results[0]);
+    res.status(200).send(results[0])
+  })
+})
+
+router.get('/accum', (req, res) => {
+  const accumSessions = `SELECT SUM(profit) AS profit, SUM(time_length) AS time_length, COUNT(id) AS num_sessions FROM sessions WHERE user_id = 1`;
+  pool.query(accumSessions, function(err, results){
+    if (err) throw err;
+    res.status(200).send(results[0]);
   })
 })
 
@@ -15,7 +32,7 @@ router.post('/new', (req, res) => {
   const newSession = `INSERT INTO sessions (user_id, stake, limit_type, game, venue, buyin, cashout, date_play, time_length, profit) VALUES (${user_id}, '${stake}', '${limit_type}', '${game}', '${venue}', ${buyin}, ${cashout}, '${date_play}', ${time_length}, ${profit})`;
   pool.query(newSession, function(err, results){
     if (err) throw err;
-    res.send(results);
+    res.status(201).send(results);
   })
 })
 
@@ -24,9 +41,7 @@ router.delete('/delete/:session_id', (req, res) => {
   const deleteSession = `DELETE FROM sessions WHERE id = ${req.params.session_id}`;
   pool.query(deleteSession, function(err, results){
     if (err) throw err;
-    res.status(200).json({
-      status: 'success'
-    })
+    res.status(204);
   })
 })
 

@@ -19,6 +19,7 @@ const SessionsPage = () => {
     };
     fetchData();
   }, [])
+  console.log(sessions);
   const renderSessions = sessions.map(session => {
     const { stake, limit_type, game, venue, played_date, time_length, profit, id } = session;
     return (

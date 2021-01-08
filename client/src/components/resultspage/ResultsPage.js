@@ -2,15 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { formatTime } from '../utils/timeFunctions';
 
 const ResultsPage = () => {
-  const [sessions, setSessions] = useState([]);
+  const [results, setResults] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/sessions`);
+        const response = await axios.get(`http://localhost:5000/api/sessions/accum`);
         if (response.status === 200){
-          setSessions(response.data);
+          console.log(response.data);
+          setResults(response.data);
         }
       } catch (err) {
         throw err;
@@ -18,19 +20,33 @@ const ResultsPage = () => {
     };
     fetchData();
   }, [])
-  const renderResults = sessions.map(session => {
+  const renderResults = () => {
     return (
-      <div>
-        <h2>{session.stake.replace("_", "/")} {session.limit_type} {session.game}</h2>
-        <h2>{session.venue}</h2>
-        <h6>{session.played_date} for {session.time_length} hours</h6>
-        <h4>{session.profit}</h4>
-      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>Total Profit</td>
+            <td>{results.profit < 0 ? `-$${Math.abs(results.profit)}` : `$${results.profit}`}</td>
+          </tr>
+          <tr>
+            <td>Total Time Played</td>
+            <td>{formatTime(results.time_length)}</td>
+          </tr>
+          <tr>
+            <td>Profit Per Hour</td>
+            <td>${(results.profit / results.time_length).toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>Profit Per Session</td>
+            <td>${(results.profit / results.num_sessions).toFixed(2)}</td>
+          </tr>
+        </tbody>
+      </table>
     )
-  })
+  }
   return (
     <div>
-      {renderResults || 'Loading...'}
+      {results ? renderResults() : 'Loading...'}
     </div>
   )
 };
