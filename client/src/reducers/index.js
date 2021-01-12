@@ -4,5 +4,5 @@ import sessionReducer from './session';
 
 export default combineReducers({
   form: formReducer,
-  editFormValues: sessionReducer
+  sessionReducer
 })

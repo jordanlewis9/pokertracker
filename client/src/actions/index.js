@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NEW_SESSION, GET_SESSION } from './types';
+import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE } from './types';
 import { timeIntToStr } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps) => async (dispatch) => {
@@ -21,11 +21,16 @@ export const newSession = (formProps) => async (dispatch) => {
   }
 };
 
+export const editSession = (formProps) => async (dispatch) => {
+  console.log(formProps);
+}
+
 export const getSession = (sessionId) => async (dispatch) => {
   try {
     const response = await axios.get(`http://localhost:5000/api/sessions/${sessionId}`);
     console.log(response);
     response.data.time_length = timeIntToStr(response.data.time_length);
+    response.data.date_play = response.data.date_play.substring(0, 10);
     dispatch({
       type: GET_SESSION,
       payload: response.data
@@ -34,3 +39,10 @@ export const getSession = (sessionId) => async (dispatch) => {
     console.log(err);
   }
 }
+
+export const resetState = () => {
+  return {
+  type: RESET_STATE,
+  payload: undefined
+  }
+};
