@@ -1,4 +1,4 @@
-export const formatTime = (time) => {
+export const formatResultTime = (time) => {
   let timeArray = time.toString().split('.');
 
   if (timeArray[1] === '00'){
@@ -9,6 +9,12 @@ export const formatTime = (time) => {
 
   timeArray[1] = Math.round((parseInt(timeArray[1]) * (3 / 5)));
   return `${timeArray[0]} hours ${timeArray[1]} minutes`;
+}
+
+export const formatToDBTime = time => {
+  const formattedLength = time.split(":").map(el => parseInt(el));
+  formattedLength[1] = Math.round(formattedLength[1] * 5/3);
+  return parseFloat(formattedLength.join("."));
 }
 
 export const timeIntToStr = (time) => {

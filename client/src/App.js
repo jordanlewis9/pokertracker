@@ -7,6 +7,8 @@ import SessionsPage from './components/sessionspage/SessionsPage';
 import ResultsPage from './components/resultspage/ResultsPage';
 import Graph from './components/graph/Graph';
 import EditSession from './components/sessionspage/EditSession';
+import Signin from './components/signinform/Signin';
+import Signup from './components/signupform/Signup';
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
             <Route exact path="/sessions" component={SessionsPage} />
             <Route exact path="/results" component={ResultsPage} />
             <Route exact path="/graph" component={Graph} />
+            <Route exact path="/signin" component={Signin} />
+            <Route exact path="/signup" component={Signup} />
             <Route path="/sessions/edit/:session_id" component={EditSession} />
           </Switch>
       </BrowserRouter>

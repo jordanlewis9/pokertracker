@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { formatTime } from '../utils/timeFunctions';
+import { formatResultTime } from '../utils/timeFunctions';
 
 const ResultsPage = () => {
   const [results, setResults] = useState(null);
@@ -30,7 +30,7 @@ const ResultsPage = () => {
           </tr>
           <tr>
             <td>Total Time Played</td>
-            <td>{formatTime(results.time_length)}</td>
+            <td>{formatResultTime(results.time_length)}</td>
           </tr>
           <tr>
             <td>Profit Per Hour</td>

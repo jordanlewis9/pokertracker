@@ -2,7 +2,8 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const sessions = require('./controller/sessionController');
+const sessionController = require('./controller/sessionController');
+const authController = require('./controller/authController');
 
 const app = express();
 app.use(bodyParser.json());
@@ -24,7 +25,8 @@ let pool = mysql.createPool({
 //   console.log('Connected to MySQL');
 // });
 
-app.use('/api/sessions', sessions);
+app.use('/api/sessions', sessionController);
+app.use('/api/auth', authController);
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {

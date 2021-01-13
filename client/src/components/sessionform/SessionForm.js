@@ -5,8 +5,10 @@ import * as actions from '../../actions';
 
 const ResultsForm = (props) => {
   const onSubmit = (formProps) => {
-    props.newSession(formProps);
-    props.history.push('/sessions');
+    const user_id = parseInt(localStorage.getItem('user_id'));
+    props.newSession(formProps, user_id, () => {
+      props.history.push('/sessions');
+    });
   }
   return (
     <div>
@@ -58,7 +60,6 @@ const ResultsForm = (props) => {
         <Field name="date_play" component="input" type="date" />
         <label htmlFor="time_length">Time Length</label>
         <Field name="time_length" component="input" type="text" placeholder="hh:mm" />
-        <Field name="user_id" component="input" type="text" />
         <button>Submit</button>
       </form>
     </div>

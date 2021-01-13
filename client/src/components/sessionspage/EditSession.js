@@ -23,8 +23,9 @@ const EditSession = (props) => {
   console.log(initialValues);
 
   const onSubmit = (formProps) => {
-    editSession(formProps);
-    history.push('/sessions');
+    editSession(formProps, session_id, () => {
+      history.push('/sessions');
+    });
   };
 
   return (
@@ -88,7 +89,8 @@ const EditSession = (props) => {
 }
 
 function mapStateToProps(state){
-  return { initialValues: state.editFormValues };
+  console.log(state);
+  return { initialValues: state.editFormValues.editFormValues };
 }
 
 export default compose(
