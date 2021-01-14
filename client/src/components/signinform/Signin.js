@@ -6,7 +6,10 @@ import * as actions from '../../actions';
 
 const Signin = (props) => {
   const handleSignin = (formProps) => {
-    props.signIn(formProps);
+    props.signIn(formProps, () => {
+      props.authUser();
+      props.history.push('/');
+    });
   }
   return (
     <div>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN } from './types';
+import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH } from './types';
 import { timeIntToStr, formatToDBTime } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps, user_id, callback) => async (dispatch) => {
@@ -51,7 +51,7 @@ export const getSession = (sessionId) => async (dispatch) => {
   }
 }
 
-export const signIn = (formProps) => async(dispatch) => {
+export const signIn = (formProps, callback) => async(dispatch) => {
   try {
     const response = await axios.post('http://localhost:5000/api/auth/signin', formProps);
     dispatch({
@@ -59,6 +59,26 @@ export const signIn = (formProps) => async(dispatch) => {
       payload: formProps
     });
     localStorage.setItem('user_id', response.data.id);
+    callback();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const authUser = () => async (dispatch) => {
+  const user = localStorage.getItem('user_id');
+  if (!user) {
+    return {
+      type: AUTH,
+      payload: null
+    }
+  };
+  try {
+    const response = await axios.get(`http://localhost:5000/api/auth/getUser/${user}`);
+    dispatch({
+      type: AUTH,
+      payload: response.data
+    })
   } catch (err) {
     console.log(err);
   }

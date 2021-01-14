@@ -1,6 +1,16 @@
 const router = require('express').Router();
 const pool = require('./../model/database');
 
+// WILL NEED PROTECTED!
+router.get('/getUser/:id', (req, res) => {
+  const getUser = `SELECT id, username, email, ip FROM users WHERE id = ${req.params.id}`;
+  pool.query(getUser, function(err, results){
+    if (err) throw err;
+    console.log(results[0]);
+    res.status(200).send(results[0]);
+  })
+})
+
 router.post('/signin', (req, res) => {
   const { username, password } = req.body;
   const getUser = `SELECT * FROM users WHERE username = '${username}'`;
