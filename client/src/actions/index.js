@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH } from './types';
+import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT } from './types';
 import { timeIntToStr, formatToDBTime } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps, user_id, callback) => async (dispatch) => {
@@ -38,7 +38,7 @@ export const editSession = (formProps, id, callback) => async (dispatch) => {
 
 export const getSession = (sessionId) => async (dispatch) => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/sessions/${sessionId}`);
+    const response = await axios.get(`http://localhost:5000/api/sessions/session/${sessionId}`);
     console.log(response);
     response.data.time_length = timeIntToStr(response.data.time_length);
     response.data.date_play = response.data.date_play.substring(0, 10);
@@ -83,6 +83,14 @@ export const authUser = () => async (dispatch) => {
     console.log(err);
   }
 }
+
+export const signOut = () => {
+  localStorage.removeItem('user_id');
+  return {
+    type: SIGN_OUT,
+    payload: null
+  }
+};
 
 export const resetState = () => {
   return {

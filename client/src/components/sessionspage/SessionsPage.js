@@ -1,15 +1,17 @@
 // Display all of the user's sessions
 
 import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import Session from './Session';
 
-const SessionsPage = () => {
+const SessionsPage = (props) => {
+  const { id } = props.user;
   const [sessions, setSessions] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/sessions`);
+        const response = await axios.get(`http://localhost:5000/api/sessions/${id}`);
         if (response.status === 200){
           setSessions(response.data);
         }
@@ -18,7 +20,7 @@ const SessionsPage = () => {
       }
     };
     fetchData();
-  }, [])
+  }, [id])
   console.log(sessions);
   const renderSessions = sessions.map(session => {
     const { stake, limit_type, game, venue, played_date, time_length, profit, id } = session;
@@ -34,4 +36,8 @@ const SessionsPage = () => {
   )
 };
 
-export default SessionsPage;
+function mapStateToProps(state) {
+  return { user: state.auth.auth };
+}
+
+export default connect(mapStateToProps)(SessionsPage);

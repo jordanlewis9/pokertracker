@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import * as actions from '../../actions';
+import SignOut from './SignOut';
 
 const Auth = (props) => {
   const { authUser, user } = props;
@@ -19,9 +20,7 @@ const Auth = (props) => {
       )
     } else {
       return (
-        <div>
-          <p>Welcome, {user.username}</p>
-        </div>
+        <SignOut username={user.username} />
       )
     }
   }

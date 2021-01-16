@@ -1,14 +1,6 @@
 const router = require('express').Router();
 const pool = require('./../model/database');
 
-router.get('/', (req, res) => {
-  const getSessions = `SELECT *, DATE_FORMAT(date_play, '%m/%d/%Y') as played_date FROM sessions WHERE user_id = 1 ORDER BY date_play`;
-  pool.query(getSessions, function(err, results){
-    if (err) throw err;
-    res.status(200).send(results);
-  })
-})
-
 router.get('/accum', (req, res) => {
   const accumSessions = `SELECT SUM(profit) AS profit, SUM(time_length) AS time_length, COUNT(id) AS num_sessions FROM sessions WHERE user_id = 1`;
   pool.query(accumSessions, function(err, results){
@@ -37,7 +29,7 @@ router.delete('/delete/:session_id', (req, res) => {
   })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/session/:id', (req, res) => {
   const getSession = `SELECT * FROM sessions WHERE id = ${req.params.id}`;
   pool.query(getSession, function(err, results){
     if (err) throw err;
@@ -55,6 +47,14 @@ router.put('/:id', (req, res) => {
   pool.query(editSession, function(err, results){
     if(err) throw err;
     res.status(200).send(results[0]);
+  })
+})
+
+router.get('/:id', (req, res) => {
+  const getSessions = `SELECT *, DATE_FORMAT(date_play, '%m/%d/%Y') as played_date FROM sessions WHERE user_id = ${req.params.id} ORDER BY date_play`;
+  pool.query(getSessions, function(err, results){
+    if (err) throw err;
+    res.status(200).send(results);
   })
 })
 
