@@ -2,7 +2,7 @@ const router = require('express').Router();
 const pool = require('./../model/database');
 
 router.get('/accum', (req, res) => {
-  const accumSessions = `SELECT SUM(profit) AS profit, SUM(time_length) AS time_length, COUNT(id) AS num_sessions FROM sessions WHERE user_id = 1`;
+  const accumSessions = `SELECT SUM(profit) AS profit, SUM(time_length) AS time_length, COUNT(id) AS num_sessions FROM sessions WHERE user_id = ${req.query.u_id}`;
   pool.query(accumSessions, function(err, results){
     if (err) throw err;
     res.status(200).send(results[0]);

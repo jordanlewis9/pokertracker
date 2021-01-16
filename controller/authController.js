@@ -33,6 +33,16 @@ router.post('/signin', (req, res) => {
   })
 });
 
-router.post('/signup');
+router.post('/signup', (req, res) => {
+  const { username, first_name, last_name, email, password } = req.body;
+  const newUser = `INSERT INTO users (username, first_name, last_name, email, password, ip) VALUES ('${username}', '${first_name}', '${last_name}', '${email}', '${password}', '127')`;
+  pool.query(newUser, function(err, results){
+    if (err) throw err;
+    console.log(results);
+    res.status(201).json({
+      message: 'success'
+    })
+  })
+});
 
 module.exports = router;

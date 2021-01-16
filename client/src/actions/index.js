@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT } from './types';
+import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT, SIGN_UP } from './types';
 import { timeIntToStr, formatToDBTime } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps, user_id, callback) => async (dispatch) => {
@@ -79,6 +79,20 @@ export const authUser = () => async (dispatch) => {
       type: AUTH,
       payload: response.data
     })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const signUp = (formProps, callback) => async (dispatch) => {
+  try {
+    console.log(formProps);
+    const response = await axios.post(`http://localhost:5000/api/auth/signup`, formProps);
+    dispatch({
+      type: SIGN_UP,
+      payload: formProps
+    });
+    callback();
   } catch (err) {
     console.log(err);
   }

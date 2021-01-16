@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import * as actions from '../../actions';
-import SignOut from './SignOut';
+import SignOutButton from './SignOutButton';
 
 const Auth = (props) => {
   const { authUser, user } = props;
@@ -20,7 +20,7 @@ const Auth = (props) => {
       )
     } else {
       return (
-        <SignOut username={user.username} />
+        <SignOutButton username={user.username} />
       )
     }
   }

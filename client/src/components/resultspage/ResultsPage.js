@@ -1,25 +1,29 @@
 // Tally all of a user's results
 
 import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import { formatResultTime } from '../utils/timeFunctions';
 
-const ResultsPage = () => {
+const ResultsPage = (props) => {
+  const { user } = props;
   const [results, setResults] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/sessions/accum`);
-        if (response.status === 200){
-          console.log(response.data);
-          setResults(response.data);
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/sessions/accum?u_id=${user}`);
+          if (response.status === 200){
+            console.log(response);
+            setResults(response.data);
+          }
+        } catch (err) {
+          throw err;
         }
-      } catch (err) {
-        throw err;
-      }
     };
-    fetchData();
-  }, [])
+    if(user){
+      fetchData();
+    }
+  }, [user])
   const renderResults = () => {
     return (
       <table>
@@ -51,4 +55,8 @@ const ResultsPage = () => {
   )
 };
 
-export default ResultsPage;
+function mapStateToProps(state) {
+  return { user: state.auth.auth.id }
+}
+
+export default connect(mapStateToProps)(ResultsPage);
