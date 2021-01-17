@@ -4,34 +4,59 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Session from './Session';
+import UserNoInput from '../utils/UserNoInput';
+import NeedAccount from '../utils/NeedAccount';
 
 const SessionsPage = (props) => {
   const { id } = props.user;
-  const [sessions, setSessions] = useState([]);
+  const [sessions, setSessions] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/sessions/${id}`);
-        if (response.status === 200){
-          setSessions(response.data);
+        try {
+          console.log(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`)
+          const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`);
+          if (response.status === 200){
+            setSessions(response.data);
+          }
+        } catch (err) {
+          throw err;
         }
-      } catch (err) {
-        throw err;
-      }
     };
-    fetchData();
+    if (id) {
+      fetchData();
+    }
   }, [id])
-  console.log(sessions);
-  const renderSessions = sessions.map(session => {
-    const { stake, limit_type, game, venue, played_date, time_length, profit, id } = session;
-    return (
-      <Session key={session.id} id={id} stake={stake} limit_type={limit_type} game={game} venue={venue} played_date={played_date}
-      time_length={time_length} profit={profit} />
-    )
-  })
+
+  const renderWait = () => {
+    if(id === null){
+      return (
+        <NeedAccount />
+      )
+    } else {
+      return (
+        <p>Loading...</p>
+      )
+    }
+  }
+  
+  const renderSessions = () => {
+    if (sessions.length === 0) {
+      return (
+        <UserNoInput page="sessions" />
+      )
+    }
+    const sessionsRendered = sessions.map(session => {
+      const { stake, limit_type, game, venue, played_date, time_length, profit, id } = session;
+      return (
+        <Session key={session.id} id={id} stake={stake} limit_type={limit_type} game={game} venue={venue} played_date={played_date}
+        time_length={time_length} profit={profit} />
+      )
+    })
+    return sessionsRendered;
+  }
   return (
     <div>
-      {renderSessions ?? 'Loading...'}
+      {sessions ? renderSessions() : renderWait()}
     </div>
   )
 };

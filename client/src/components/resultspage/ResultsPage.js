@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { formatResultTime } from '../utils/timeFunctions';
+import UserNoInput from '../utils/UserNoInput';
+import NeedAccount from '../utils/NeedAccount';
 
 const ResultsPage = (props) => {
   const { user } = props;
@@ -12,10 +14,7 @@ const ResultsPage = (props) => {
       const fetchData = async () => {
         try {
           const response = await axios.get(`http://localhost:5000/api/sessions/accum?u_id=${user}`);
-          if (response.status === 200){
-            console.log(response);
-            setResults(response.data);
-          }
+          setResults(response.data);
         } catch (err) {
           throw err;
         }
@@ -24,7 +23,25 @@ const ResultsPage = (props) => {
       fetchData();
     }
   }, [user])
+
+  const renderWait = () => {
+    if (!user) {
+      return (
+        <NeedAccount />
+      )
+    } else {
+      return (
+        <p>Loading...</p>
+      )
+    }
+  }
+
   const renderResults = () => {
+    if (results.num_sessions === 0) {
+      return (
+        <UserNoInput page="results" />
+      )
+    }
     return (
       <table>
         <tbody>
@@ -48,9 +65,10 @@ const ResultsPage = (props) => {
       </table>
     )
   }
+
   return (
     <div>
-      {results ? renderResults() : 'Loading...'}
+      {results ? renderResults() : renderWait()}
     </div>
   )
 };
