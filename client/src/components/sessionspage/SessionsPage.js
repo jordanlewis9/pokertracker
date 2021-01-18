@@ -13,7 +13,6 @@ const SessionsPage = (props) => {
   useEffect(() => {
     const fetchData = async () => {
         try {
-          console.log(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`)
           const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`);
           if (response.status === 200){
             setSessions(response.data);

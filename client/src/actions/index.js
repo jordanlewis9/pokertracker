@@ -88,6 +88,7 @@ export const signUp = (formProps, callback) => async (dispatch) => {
   try {
     console.log(formProps);
     const response = await axios.post(`http://localhost:5000/api/auth/signup`, formProps);
+    signIn({ username: formProps.username, password: formProps.password }, () => null);
     dispatch({
       type: SIGN_UP,
       payload: formProps

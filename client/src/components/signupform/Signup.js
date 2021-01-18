@@ -6,7 +6,7 @@ import * as actions from '../../actions';
 
 
 const Signup = (props) => {
-  const { userExists, signUp, history } = props;
+  const { userExists, signUp, history, signIn, authUser } = props;
   useEffect(() => {
     if(userExists){
       history.push('/');
@@ -14,7 +14,10 @@ const Signup = (props) => {
   }, [userExists]);
   const handleSignUp = (formProps) => {
     signUp(formProps, () => {
-      history.push('/');
+      signIn({ username: formProps.username, password: formProps.password }, () => {
+        authUser();
+        history.push('/');
+      })
     })
   }
   return (
