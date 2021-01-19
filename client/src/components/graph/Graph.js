@@ -7,6 +7,8 @@ const Graph = (props) => {
   const { id } = props.user;
   const [sessions, setSessions] = useState(null);
   const [accumProfits, setAccumProfits] = useState(null);
+  const [profitForBuffer, setProfitForBuffer] = useState(null);
+  const [graphMade, setGraphMade] = useState(false);
   
   useEffect(() => {
     const fetchData = async (id) => {
@@ -23,17 +25,69 @@ const Graph = (props) => {
   }, [id]);
   
   if (sessions && !accumProfits) {
-    let accumArray = [sessions[0].profit];
+    let accumArray = [{ session: 0, profit: 0}, { session: 1, profit: sessions[0].profit}];
     for(let i = 1; i < sessions.length; i++){
-      accumArray.push(sessions[i].profit + accumArray[i - 1]);
+      accumArray.push({ session: i + 1, profit: sessions[i].profit + accumArray[i].profit });
     }
     setAccumProfits(accumArray);
   }
 
-  console.log(accumProfits);
+  if (accumProfits && !profitForBuffer) {
+    let avgProfit = accumProfits[accumProfits.length - 1].profit / (accumProfits.length - 1);
+    setProfitForBuffer(avgProfit);
+  }
+
+  if (sessions && accumProfits && profitForBuffer && !graphMade){
+    console.log(accumProfits);
+    console.log(profitForBuffer);
+    console.log('called');
+    const h = 500;
+    const w = 500;
+    const padding = 20;
+    const yScale = d3.scaleLinear()
+    .domain([d3.min(accumProfits, (d) => d.profit) - profitForBuffer, d3.max(accumProfits, (d) => d.profit) + profitForBuffer])
+    .range([h, 0])
+
+const xScale = d3.scaleLinear()
+  .domain([0, accumProfits.length - 1])
+  .range([0, w])
+
+const xAxis = d3.axisBottom(xScale);
+const yAxis = d3.axisLeft(yScale);
+
+    const line = d3.line()
+                    .x(d => xScale(d.session))
+                    .y(d => yScale(d.profit))
+
+    const svg = d3.select('.graph__board')
+    .append('svg')
+    .attr('width', w)
+    .attr('height', h)
+    .style('background', 'lightsteelblue');
+
+    svg.append("g")
+        .call(xAxis);
+
+    svg.append("g")
+        .call(yAxis);
+
+        console.log(line);
+
+    svg.append("path")
+        .datum(accumProfits)
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", "1.5")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("d", line);
+
+
+    setGraphMade(true);
+  }
 
   return (
-    <div>
+    <div className="graph__board">
       This is the graph inside of the graph page!
     </div>
   )
