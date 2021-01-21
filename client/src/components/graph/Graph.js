@@ -43,14 +43,15 @@ const Graph = (props) => {
     console.log('called');
     const h = 500;
     const w = 500;
-    const padding = 20;
+    const padding = 40;
+
     const yScale = d3.scaleLinear()
     .domain([d3.min(accumProfits, (d) => d.profit) - profitForBuffer, d3.max(accumProfits, (d) => d.profit) + profitForBuffer])
-    .range([h, 0])
+    .range([h - padding, padding])
 
 const xScale = d3.scaleLinear()
   .domain([0, accumProfits.length - 1])
-  .range([0, w])
+  .range([padding, w - padding])
 
 const xAxis = d3.axisBottom(xScale);
 const yAxis = d3.axisLeft(yScale);
@@ -66,9 +67,11 @@ const yAxis = d3.axisLeft(yScale);
     .style('background', 'lightsteelblue');
 
     svg.append("g")
+        .attr("transform", `translate(0, ${h - padding})`)
         .call(xAxis);
 
     svg.append("g")
+        .attr("transform", `translate(${padding}, 0)`)
         .call(yAxis);
 
         console.log(line);
