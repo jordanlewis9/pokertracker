@@ -1,6 +1,6 @@
 .header__container {
   background: yellow;
-  height: 4em;
+  height: 10vh;
   display: grid;
   grid-template-rows: 100%;
   grid-template-columns: 80% 20%;

@@ -1,9 +1,9 @@
 import Graph from './Graph';
+import './graphStyles.css';
 
 const GraphPage = () => {
   return (
-    <div>
-      This is the graph page.
+    <div className="graph__container">
       <Graph />
     </div>
   )

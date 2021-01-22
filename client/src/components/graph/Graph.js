@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import axios from 'axios';
+import NeedAccount from '../utils/NeedAccount';
 
 const Graph = (props) => {
   const { id } = props.user;
@@ -41,8 +42,8 @@ const Graph = (props) => {
     console.log(accumProfits);
     console.log(profitForBuffer);
     console.log('called');
-    const h = 500;
-    const w = 500;
+    const h = window.innerHeight - (window.innerHeight * 0.2);
+    const w = window.innerWidth - (window.innerWidth * 0.05);
     const padding = 40;
 
     const yScale = d3.scaleLinear()
@@ -62,8 +63,9 @@ const yAxis = d3.axisLeft(yScale);
 
     const svg = d3.select('.graph__board')
     .append('svg')
-    .attr('width', w)
-    .attr('height', h)
+    // .attr('width', w)
+    // .attr('height', h)
+    .attr('viewBox', `0 0 ${w} ${h}`)
     .style('background', 'lightsteelblue');
 
     svg.append("g")
@@ -91,7 +93,6 @@ const yAxis = d3.axisLeft(yScale);
 
   return (
     <div className="graph__board">
-      This is the graph inside of the graph page!
     </div>
   )
 };
