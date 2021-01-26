@@ -2,8 +2,10 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const sessionController = require('./controller/sessionController');
 const authController = require('./controller/authController');
+dotenv.config({ path: './.env' });
 
 const app = express();
 app.use(bodyParser.json());

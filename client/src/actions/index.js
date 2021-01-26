@@ -58,6 +58,7 @@ export const signIn = (formProps, callback) => async(dispatch) => {
       type: SIGN_IN,
       payload: formProps
     });
+    console.log('before local');
     localStorage.setItem('user_id', response.data.id);
     callback();
   } catch (err) {
