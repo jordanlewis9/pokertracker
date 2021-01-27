@@ -8,11 +8,11 @@ import * as actions from '../../actions';
 
 
 const EditSession = (props) => {
-  const { getSession, initialValues, editSession, history, handleSubmit, resetState } = props;
+  const { getSession, initialValues, editSession, history, handleSubmit, resetState, user } = props;
   let { session_id } = useParams();
   useEffect(() => {
     async function fetchData() {
-      await getSession(session_id);
+      await getSession(session_id, user.id);
     }
   fetchData();
   return () => {
@@ -20,10 +20,8 @@ const EditSession = (props) => {
   }
   }, [session_id, getSession, resetState]);
 
-  console.log(initialValues);
-
   const onSubmit = (formProps) => {
-    editSession(formProps, session_id, () => {
+    editSession(formProps, session_id, user.id, () => {
       history.push('/sessions');
     });
   };
@@ -83,14 +81,14 @@ const EditSession = (props) => {
           <button>Submit</button>
         </form>
       </div>
-      <DeleteSession history={history}/>
+      <DeleteSession history={history} user={user} />
     </div>
   )
 }
 
 function mapStateToProps(state){
   console.log(state);
-  return { initialValues: state.editFormValues.editFormValues };
+  return { initialValues: state.editFormValues.editFormValues, user: state.auth.auth };
 }
 
 export default compose(

@@ -7,9 +7,14 @@ export const newSession = (formProps, user_id, callback) => async (dispatch) => 
   formProps.buyin = parseFloat(formProps.buyin);
   formProps.cashout = parseFloat(formProps.cashout);
   formProps.user_id = user_id;
+  const user = localStorage.getItem('token');
   // console.log(formProps);
   try {
-    const response = await axios.post('http://localhost:5000/api/sessions/new', formProps);
+    const response = await axios.post(`http://localhost:5000/api/sessions/new?u_id=${user_id}`, formProps, {
+      headers: {
+        'Authorization': `Bearer ${user}`
+      }
+    });
     callback();
     dispatch({
       type: NEW_SESSION,
@@ -20,12 +25,15 @@ export const newSession = (formProps, user_id, callback) => async (dispatch) => 
   }
 };
 
-export const editSession = (formProps, id, callback) => async (dispatch) => {
+export const editSession = (formProps, id, userId, callback) => async (dispatch) => {
+  const user = localStorage.getItem('token');
   formProps.time_length = formatToDBTime(formProps.time_length);
   formProps.buyin = parseFloat(formProps.buyin);
   formProps.cashout = parseFloat(formProps.cashout);
   try {
-    const response = await axios.put(`http://localhost:5000/api/sessions/${id}`, formProps);
+    const response = await axios.put(`http://localhost:5000/api/sessions/session?session_id=${id}&u_id=${userId}`, formProps, {
+      headers: { 'Authorization': `Bearer ${user}`}
+    });
     callback();
     dispatch({
       type: EDIT_SESSION,
@@ -36,9 +44,12 @@ export const editSession = (formProps, id, callback) => async (dispatch) => {
   }
 }
 
-export const getSession = (sessionId) => async (dispatch) => {
+export const getSession = (sessionId, userId) => async (dispatch) => {
+  const user = localStorage.getItem('token');
   try {
-    const response = await axios.get(`http://localhost:5000/api/sessions/session/${sessionId}`);
+    const response = await axios.get(`http://localhost:5000/api/sessions/session?session_id=${sessionId}&u_id=${userId}`, {
+      headers: { 'Authorization': `Bearer ${user}`}
+    });
     console.log(response);
     response.data.time_length = timeIntToStr(response.data.time_length);
     response.data.date_play = response.data.date_play.substring(0, 10);
@@ -58,8 +69,7 @@ export const signIn = (formProps, callback) => async(dispatch) => {
       type: SIGN_IN,
       payload: formProps
     });
-    console.log('before local');
-    localStorage.setItem('user_id', response.data.id);
+    localStorage.setItem('token', response.data.token);
     callback();
   } catch (err) {
     console.log(err);
@@ -67,7 +77,7 @@ export const signIn = (formProps, callback) => async(dispatch) => {
 }
 
 export const authUser = () => async (dispatch) => {
-  const user = localStorage.getItem('user_id');
+  const user = localStorage.getItem('token');
   if (!user) {
     return {
       type: AUTH,
@@ -75,7 +85,9 @@ export const authUser = () => async (dispatch) => {
     }
   };
   try {
-    const response = await axios.get(`http://localhost:5000/api/auth/getUser/${user}`);
+    const response = await axios.get(`http://localhost:5000/api/auth/getUser?u_id=${user}`, {
+      headers: { 'Authorization': `Bearer ${user}`}
+    });
     dispatch({
       type: AUTH,
       payload: response.data
@@ -101,7 +113,7 @@ export const signUp = (formProps, callback) => async (dispatch) => {
 }
 
 export const signOut = () => {
-  localStorage.removeItem('user_id');
+  localStorage.removeItem('token');
   return {
     type: SIGN_OUT,
     payload: null

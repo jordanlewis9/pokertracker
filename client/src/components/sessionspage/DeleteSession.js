@@ -7,7 +7,7 @@ const DeleteSession = (props) => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(`http://localhost:5000/api/sessions/delete/${session_id}`);
+      const response = await axios.delete(`http://localhost:5000/api/sessions/delete?session_id=${session_id}&u_id=${props.user.id}`);
       console.log(response);
       if (response.status === 204){
         props.history.push('/sessions');

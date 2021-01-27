@@ -1,15 +1,14 @@
-const router = require('express').Router();
 const pool = require('./../model/database');
 
-router.get('/accum', (req, res) => {
+const getAccumSessions = (req, res) => {
   const accumSessions = `SELECT SUM(profit) AS profit, SUM(time_length) AS time_length, COUNT(id) AS num_sessions FROM sessions WHERE user_id = ${req.query.u_id}`;
   pool.query(accumSessions, function(err, results){
     if (err) throw err;
     res.status(200).send(results[0]);
   })
-})
+};
 
-router.post('/new', (req, res) => {
+const addNewSession = (req, res) => {
   const { user_id, stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
   const profit = cashout - buyin;
   const newSession = `INSERT INTO sessions (user_id, stake, limit_type, game, venue, buyin, cashout, date_play, time_length, profit) VALUES (${user_id}, '${stake}', '${limit_type}', '${game}', '${venue}', ${buyin}, ${cashout}, '${date_play}', ${time_length}, ${profit})`;
@@ -17,28 +16,28 @@ router.post('/new', (req, res) => {
     if (err) throw err;
     res.status(201).send(results);
   })
-})
+};
 
 
-router.delete('/delete/:session_id', (req, res) => {
-  console.log(req.params.session_id);
+const deleteSession = (req, res) => {
+  console.log(req.query.session_id);
   const deleteSession = `DELETE FROM sessions WHERE id = ${req.params.session_id}`;
   pool.query(deleteSession, function(err, results){
     if (err) throw err;
     res.status(204);
   })
-})
+}
 
-router.get('/session/:id', (req, res) => {
-  const getSession = `SELECT * FROM sessions WHERE id = ${req.params.id}`;
+const getSession = (req, res) => {
+  const getSession = `SELECT * FROM sessions WHERE id = ${req.query.session_id}`;
   pool.query(getSession, function(err, results){
     if (err) throw err;
     res.status(200).send(results[0])
   })
-})
+};
 
-router.put('/:id', (req, res) => {
-  const { id } = req.params;
+const editSession = (req, res) => {
+  const { id } = req.query;
   const { stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
   const profit = cashout - buyin;
   let editSession = `UPDATE sessions SET stake = '${stake}', limit_type = '${limit_type}', game = '${game}', venue = '${venue}', `;
@@ -48,14 +47,14 @@ router.put('/:id', (req, res) => {
     if(err) throw err;
     res.status(200).send(results[0]);
   })
-})
+};
 
-router.get('/allSessions', (req, res) => {
+const getAllSessions = (req, res) => {
   const getSessions = `SELECT *, DATE_FORMAT(date_play, '%m/%d/%Y') as played_date FROM sessions WHERE user_id = ${req.query.u_id} ORDER BY date_play`;
   pool.query(getSessions, function(err, results){
     if (err) throw err;
     res.status(200).send(results);
   })
-})
+};
 
-module.exports = router;
+module.exports = { getAccumSessions, addNewSession, deleteSession, getSession, editSession, getAllSessions };

@@ -1,10 +1,9 @@
 const express = require('express');
-const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const sessionController = require('./controller/sessionController');
-const authController = require('./controller/authController');
+const sessionRouter = require('./controller/sessionRouter');
+const authRouter = require('./controller/authRouter');
 dotenv.config({ path: './.env' });
 
 const app = express();
@@ -12,13 +11,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-let pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'poker_tracker'
-});
 
 // connection.connect(err => {
 //   if (err) {
@@ -27,12 +19,10 @@ let pool = mysql.createPool({
 //   console.log('Connected to MySQL');
 // });
 
-app.use('/api/sessions', sessionController);
-app.use('/api/auth', authController);
+app.use('/api/sessions', sessionRouter);
+app.use('/api/auth', authRouter);
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 });
-
-module.exports = pool;

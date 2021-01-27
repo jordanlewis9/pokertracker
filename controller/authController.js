@@ -1,4 +1,3 @@
-const router = require('express').Router();
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const pool = require('./../model/database');
@@ -10,28 +9,32 @@ const tokenForUser = (user) => {
 };
 
 // WILL NEED PROTECTED!
-router.get('/getUser/:id', (req, res) => {
-  const getUser = `SELECT id, username, email, ip FROM users WHERE id = ${req.params.id}`;
+const getUser = (req, res) => {
+  const getUser = `SELECT id, username, email, ip FROM users WHERE id = ${req.query.u_id}`;
   pool.query(getUser, function(err, results){
     if (err) throw err;
     console.log(results[0]);
     res.status(200).send(results[0]);
   })
-})
+}
 
-router.post('/signin', (req, res) => {
+const signin = (req, res) => {
   const { username, password } = req.body;
   const getUser = `SELECT * FROM users WHERE username = '${username}'`;
   pool.query(getUser, function(err, results){
     if (err) {
-      console.log(err);
       throw err;
     }
     const user = results[0];
+    if (!user) {
+      return res.status(400).json({
+        status: 'failed',
+        message: 'Incorrect username or password'
+      });
+    }
     bcrypt.compare(password, user.password, function(err, result) {
       if (err) throw err;
       if (result) {
-        console.log('signed in')
         return res.status(200).send({
           token: tokenForUser(user)
         });
@@ -39,13 +42,13 @@ router.post('/signin', (req, res) => {
         return res.status(400).json({
           status: 'failed',
           message: 'Incorrect username or password'
-        })
+        });
       }
     })
   })
-});
+};
 
-router.post('/signup', (req, res) => {
+const signup = (req, res) => {
   let { username, first_name, last_name, email, password } = req.body;
   const checkUser = `SELECT * FROM users WHERE username = '${username}' OR email ='${email}'`;
   pool.query(checkUser, function(err, results) {
@@ -70,9 +73,9 @@ router.post('/signup', (req, res) => {
       })
     })
   })
-});
+};
 
-router.put('/updateUser', (req, res) => {
+const updateUser = (req, res) => {
   let { username, first_name, last_name, email, password, id } = req.body;
   const saltRounds = 12;
   bcrypt.genSalt(saltRounds, function(err, salt) {
@@ -95,6 +98,6 @@ router.put('/updateUser', (req, res) => {
       })
     })
   })
-});
+};
 
-module.exports = router;
+module.exports = { getUser, signin, signup, updateUser };
