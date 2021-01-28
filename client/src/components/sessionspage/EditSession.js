@@ -9,19 +9,20 @@ import * as actions from '../../actions';
 
 const EditSession = (props) => {
   const { getSession, initialValues, editSession, history, handleSubmit, resetState, user } = props;
+  const { id } = user;
   let { session_id } = useParams();
   useEffect(() => {
     async function fetchData() {
-      await getSession(session_id, user.id);
+      await getSession(session_id, id);
     }
   fetchData();
   return () => {
     resetState();
   }
-  }, [session_id, getSession, resetState]);
+  }, [session_id, getSession, resetState, id]);
 
   const onSubmit = (formProps) => {
-    editSession(formProps, session_id, user.id, () => {
+    editSession(formProps, session_id, id, () => {
       history.push('/sessions');
     });
   };

@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const verify = require('./verify');
+const verify = require('./../middlewares/verifyMiddleware');
 const sessionController = require('./sessionController');
 
-router.get('/accum', verify.verifyUser, sessionController.getAccumSessions);
-router.post('/new', verify.verifyUser, sessionController.addNewSession);
-router.delete('/delete', verify.verifyUser, sessionController.deleteSession);
-router.get('/session', verify.verifyUser, sessionController.getSession);
-router.put('/session', verify.verifyUser, sessionController.editSession);
-router.get('/allSessions', verify.verifyUser, sessionController.getAllSessions);
+router.get('/accum', verify, sessionController.getAccumSessions);
+router.post('/new', verify, sessionController.addNewSession);
+router.delete('/delete', verify, sessionController.deleteSession);
+router.get('/session', verify, sessionController.getSession);
+router.put('/session', verify, sessionController.editSession);
+router.get('/allSessions', verify, sessionController.getAllSessions);
 
 module.exports = router;

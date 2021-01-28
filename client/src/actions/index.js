@@ -70,6 +70,7 @@ export const signIn = (formProps, callback) => async(dispatch) => {
       payload: formProps
     });
     localStorage.setItem('token', response.data.token);
+    localStorage.setItem('id', response.data.id);
     callback();
   } catch (err) {
     console.log(err);
@@ -78,6 +79,7 @@ export const signIn = (formProps, callback) => async(dispatch) => {
 
 export const authUser = () => async (dispatch) => {
   const user = localStorage.getItem('token');
+  const id = localStorage.getItem('id');
   if (!user) {
     return {
       type: AUTH,
@@ -85,7 +87,7 @@ export const authUser = () => async (dispatch) => {
     }
   };
   try {
-    const response = await axios.get(`http://localhost:5000/api/auth/getUser?u_id=${user}`, {
+    const response = await axios.get(`http://localhost:5000/api/auth/getUser?u_id=${id}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
     dispatch({

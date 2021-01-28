@@ -20,11 +20,12 @@ const addNewSession = (req, res) => {
 
 
 const deleteSession = (req, res) => {
-  console.log(req.query.session_id);
-  const deleteSession = `DELETE FROM sessions WHERE id = ${req.params.session_id}`;
+  const deleteSession = `DELETE FROM sessions WHERE id = ${req.query.session_id}`;
   pool.query(deleteSession, function(err, results){
     if (err) throw err;
-    res.status(204);
+    res.status(204).json({
+      status: 'success'
+    });
   })
 }
 
@@ -57,4 +58,4 @@ const getAllSessions = (req, res) => {
   })
 };
 
-module.exports = { getAccumSessions, addNewSession, deleteSession, getSession, editSession, getAllSessions };
+module.exports = {getAccumSessions, addNewSession, deleteSession, getSession, editSession, getAllSessions};

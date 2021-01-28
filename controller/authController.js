@@ -36,7 +36,8 @@ const signin = (req, res) => {
       if (err) throw err;
       if (result) {
         return res.status(200).send({
-          token: tokenForUser(user)
+          token: tokenForUser(user),
+          id: user.id
         });
       } else {
         return res.status(400).json({
@@ -100,4 +101,4 @@ const updateUser = (req, res) => {
   })
 };
 
-module.exports = { getUser, signin, signup, updateUser };
+module.exports = { getUser, signin, signup, updateUser};

@@ -8,24 +8,27 @@ import UserNoInput from '../utils/UserNoInput';
 import NeedAccount from '../utils/NeedAccount';
 
 const ResultsPage = (props) => {
-  const { user } = props;
+  const { id } = props.user;
   const [results, setResults] = useState(null);
   useEffect(() => {
       const fetchData = async () => {
+        const user = localStorage.getItem('token');
         try {
-          const response = await axios.get(`http://localhost:5000/api/sessions/accum?u_id=${user}`);
+          const response = await axios.get(`http://localhost:5000/api/sessions/accum?u_id=${id}`, {
+            headers: { 'Authorization': `Bearer ${user}`}
+          });
           setResults(response.data);
         } catch (err) {
           throw err;
         }
     };
-    if(user){
+    if(id){
       fetchData();
     }
-  }, [user])
+  }, [id])
 
   const renderWait = () => {
-    if (!user) {
+    if (!id) {
       return (
         <NeedAccount />
       )
@@ -74,7 +77,7 @@ const ResultsPage = (props) => {
 };
 
 function mapStateToProps(state) {
-  return { user: state.auth.auth.id }
+  return { user: state.auth.auth }
 }
 
 export default connect(mapStateToProps)(ResultsPage);

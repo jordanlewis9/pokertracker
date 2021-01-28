@@ -13,8 +13,11 @@ const Graph = (props) => {
   
   useEffect(() => {
     const fetchData = async (id) => {
+      const user = localStorage.getItem('token');
       try {
-        const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`);
+        const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`, {
+          headers: { 'Authorization': `Bearer ${user}`}
+        });
         setSessions(response.data);
       } catch(err) {
         console.log(err)
@@ -33,15 +36,17 @@ const Graph = (props) => {
     setAccumProfits(accumArray);
   }
 
-  if (accumProfits && !profitForBuffer) {
+  if (accumProfits && !profitForBuffer && typeof profitForBuffer !== "number") {
+    console.log('avgprofit')
     let avgProfit = accumProfits[accumProfits.length - 1].profit / (accumProfits.length - 1);
+    if(avgProfit < 0) {
+      avgProfit = 0;
+    }
     setProfitForBuffer(avgProfit);
   }
 
-  if (sessions && accumProfits && profitForBuffer && !graphMade){
-    console.log(accumProfits);
-    console.log(profitForBuffer);
-    console.log('called');
+  if (sessions && accumProfits && typeof profitForBuffer === "number" && !graphMade){
+    console.log("graph called")
     const h = window.innerHeight - (window.innerHeight * 0.2);
     const w = window.innerWidth - (window.innerWidth * 0.05);
     const padding = 40;
@@ -54,8 +59,8 @@ const xScale = d3.scaleLinear()
   .domain([0, accumProfits.length - 1])
   .range([padding, w - padding])
 
-const xAxis = d3.axisBottom(xScale);
-const yAxis = d3.axisLeft(yScale);
+const xAxis = d3.axisBottom(xScale).ticks(3);
+const yAxis = d3.axisLeft(yScale).ticks(6)
 
     const line = d3.line()
                     .x(d => xScale(d.session))
@@ -74,7 +79,9 @@ const yAxis = d3.axisLeft(yScale);
 
     svg.append("g")
         .attr("transform", `translate(${padding}, 0)`)
-        .call(yAxis);
+        .call(yAxis).call(g => g.selectAll('.tick line').clone()
+        .attr("stroke-opacity", d => d === 0 ? 1 : 0.2)
+        .attr("x2", w - padding-padding));;
 
         console.log(line);
 
