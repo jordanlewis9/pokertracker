@@ -21,26 +21,19 @@ export const formatToDBTime = time => {
 }
 
 export const timeIntToStr = (time) => {
-  if(time < 10){
-    let timeArray = time.toString().split('.');
-    timeArray[0] = '0' + timeArray[0];
-    timeArray[1] = Math.round((parseInt(timeArray[1]) * (3 / 5)));
-    console.log(typeof timeArray[1]);
-    if (!timeArray[1]) {
-      timeArray[1] = '00'
-    } else if (parseInt(timeArray[1]) < 10){
-      timeArray[1] = `0${timeArray[1]}`;
-    }
-    return timeArray.join(':');
-  } else {
-    let timeArray = time.toString().split('.');
-    console.log(timeArray);
-    timeArray[1] = Math.round((parseInt(timeArray[1]) * (3 / 5)));
-    if (!timeArray[1]) {
-      timeArray[1] = '00';
-    } else if (parseInt(timeArray[1]) < 10){
-      timeArray[1] = `0${timeArray[1]}`;
-    }
-    return timeArray.join(':');
+  let timeArray = time.toString().split('.');
+  if (timeArray[1].length === 1) {
+    timeArray[1] += '0';
   }
+  timeArray[1] = Math.round((parseInt(timeArray[1]) * (3 / 5)));
+  if (!timeArray[1]) {
+    timeArray[1] = '00';
+  } 
+  if (parseInt(timeArray[1]) < 10){
+    timeArray[1] = `0${timeArray[1]}`;
+  }
+  if(time < 10){
+    timeArray[0] = '0' + timeArray[0];
+  }
+    return timeArray.join(':');
 }

@@ -1,6 +1,6 @@
 import { GET_SESSION, RESET_STATE } from '../actions/types';
 
-export default (state = {}, action) => {
+const sessionReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_SESSION:
       console.log(action.payload);
@@ -10,4 +10,6 @@ export default (state = {}, action) => {
     default:
       return state;
   }
-}
+};
+
+export default sessionReducer;

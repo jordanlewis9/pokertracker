@@ -8,7 +8,7 @@ import * as actions from '../../actions';
 
 
 const EditSession = (props) => {
-  const { getSession, initialValues, editSession, history, handleSubmit, resetState, user } = props;
+  const { getSession, editSession, history, handleSubmit, resetState, user } = props;
   const { id } = user;
   let { session_id } = useParams();
   useEffect(() => {
@@ -78,7 +78,6 @@ const EditSession = (props) => {
           <Field name="date_play" component="input" type="date" />
           <label htmlFor="time_length">Time Length</label>
           <Field name="time_length" component="input" type="text" placeholder="hh:mm" />
-          <Field name="user_id" component="input" type="text" />
           <button>Submit</button>
         </form>
       </div>

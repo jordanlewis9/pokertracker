@@ -3,14 +3,10 @@ import * as actions from '../../actions';
 
 const SignOutButton = (props) => {
   const { username, signOut } = props;
-  const handleSignOut = () => {
-    signOut();
-    window.location.replace('/');
-  }
   return (
     <div>
       <p>Welcome, {username}</p>
-      <button onClick={handleSignOut}>Sign Out</button>
+      <button onClick={signOut}>Sign Out</button>
     </div>
   )
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import axios from 'axios';
-import NeedAccount from '../utils/NeedAccount';
+import renderWait from '../utils/renderWait';
 
 const Graph = (props) => {
   const { id } = props.user;
@@ -75,7 +75,8 @@ const yAxis = d3.axisLeft(yScale).ticks(6)
 
     svg.append("g")
         .attr("transform", `translate(0, ${h - padding})`)
-        .call(xAxis);
+        .call(xAxis)
+        .call(g => g.select('.domain').remove());
 
     svg.append("g")
         .attr("transform", `translate(${padding}, 0)`)
@@ -98,8 +99,10 @@ const yAxis = d3.axisLeft(yScale).ticks(6)
     setGraphMade(true);
   }
 
+
   return (
     <div className="graph__board">
+      {!graphMade ? renderWait(id) : null}
     </div>
   )
 };

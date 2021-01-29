@@ -4,7 +4,7 @@ const pool = require('./../model/database');
 
 const tokenForUser = (user) => {
   return jwt.sign({ sub: user.id }, process.env.SECRET, {
-    expiresIn: '12h'
+    expiresIn: '24h'
   })
 };
 
@@ -23,7 +23,10 @@ const signin = (req, res) => {
   const getUser = `SELECT * FROM users WHERE username = '${username}'`;
   pool.query(getUser, function(err, results){
     if (err) {
-      throw err;
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Something went wrong. Please try again later.'
+      })
     }
     const user = results[0];
     if (!user) {
@@ -33,13 +36,20 @@ const signin = (req, res) => {
       });
     }
     bcrypt.compare(password, user.password, function(err, result) {
-      if (err) throw err;
+      if (err) {
+        console.log(err.message);
+        return res.status(400).json({
+          status: 'failed',
+          message: 'Incorrect username or password'
+        })
+      }
       if (result) {
         return res.status(200).send({
           token: tokenForUser(user),
           id: user.id
         });
       } else {
+        console.log('failure')
         return res.status(400).json({
           status: 'failed',
           message: 'Incorrect username or password'

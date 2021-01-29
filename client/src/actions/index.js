@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT, SIGN_UP } from './types';
+import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT, SIGN_UP, ERROR } from './types';
 import { timeIntToStr, formatToDBTime } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps, user_id, callback) => async (dispatch) => {
@@ -8,9 +8,8 @@ export const newSession = (formProps, user_id, callback) => async (dispatch) => 
   formProps.cashout = parseFloat(formProps.cashout);
   formProps.user_id = user_id;
   const user = localStorage.getItem('token');
-  // console.log(formProps);
   try {
-    const response = await axios.post(`http://localhost:5000/api/sessions/new?u_id=${user_id}`, formProps, {
+    await axios.post(`http://localhost:5000/api/sessions/new?u_id=${user_id}`, formProps, {
       headers: {
         'Authorization': `Bearer ${user}`
       }
@@ -31,7 +30,7 @@ export const editSession = (formProps, id, userId, callback) => async (dispatch)
   formProps.buyin = parseFloat(formProps.buyin);
   formProps.cashout = parseFloat(formProps.cashout);
   try {
-    const response = await axios.put(`http://localhost:5000/api/sessions/session?session_id=${id}&u_id=${userId}`, formProps, {
+    await axios.put(`http://localhost:5000/api/sessions/session?session_id=${id}&u_id=${userId}`, formProps, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
     callback();
@@ -50,7 +49,6 @@ export const getSession = (sessionId, userId) => async (dispatch) => {
     const response = await axios.get(`http://localhost:5000/api/sessions/session?session_id=${sessionId}&u_id=${userId}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
-    console.log(response);
     response.data.time_length = timeIntToStr(response.data.time_length);
     response.data.date_play = response.data.date_play.substring(0, 10);
     dispatch({
@@ -101,8 +99,7 @@ export const authUser = () => async (dispatch) => {
 
 export const signUp = (formProps, callback) => async (dispatch) => {
   try {
-    console.log(formProps);
-    const response = await axios.post(`http://localhost:5000/api/auth/signup`, formProps);
+    await axios.post(`http://localhost:5000/api/auth/signup`, formProps);
     signIn({ username: formProps.username, password: formProps.password }, () => null);
     dispatch({
       type: SIGN_UP,
@@ -116,6 +113,7 @@ export const signUp = (formProps, callback) => async (dispatch) => {
 
 export const signOut = () => {
   localStorage.removeItem('token');
+  window.location.replace('/');
   return {
     type: SIGN_OUT,
     payload: null

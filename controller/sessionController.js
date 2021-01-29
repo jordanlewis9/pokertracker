@@ -33,19 +33,26 @@ const getSession = (req, res) => {
   const getSession = `SELECT * FROM sessions WHERE id = ${req.query.session_id}`;
   pool.query(getSession, function(err, results){
     if (err) throw err;
+    console.log(results[0])
     res.status(200).send(results[0])
   })
 };
 
 const editSession = (req, res) => {
-  const { id } = req.query;
+  const { session_id, u_id } = req.query;
   const { stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
   const profit = cashout - buyin;
   let editSession = `UPDATE sessions SET stake = '${stake}', limit_type = '${limit_type}', game = '${game}', venue = '${venue}', `;
   editSession += `buyin = ${buyin}, cashout = ${cashout}, date_play = '${date_play}', time_length = ${time_length}, profit = ${profit} `;
-  editSession += `WHERE id = ${id}`;
+  editSession += `WHERE id = ${session_id} AND user_id = ${u_id}`;
   pool.query(editSession, function(err, results){
     if(err) throw err;
+    if(!results[0]) {
+      return res.status(403).json({
+        status: 'failed',
+        message: 'Could not find record of this session'
+      })
+    }
     res.status(200).send(results[0]);
   })
 };

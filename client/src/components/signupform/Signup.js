@@ -11,7 +11,7 @@ const Signup = (props) => {
     if(userExists){
       history.push('/');
     }
-  }, [userExists]);
+  }, [userExists, history]);
   const handleSignUp = (formProps) => {
     signUp(formProps, () => {
       signIn({ username: formProps.username, password: formProps.password }, () => {

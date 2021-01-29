@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import Session from './Session';
 import UserNoInput from '../utils/UserNoInput';
-import NeedAccount from '../utils/NeedAccount';
+import renderWait from '../utils/renderWait';
 
 const SessionsPage = (props) => {
   const { id } = props.user;
@@ -28,18 +28,6 @@ const SessionsPage = (props) => {
       fetchData();
     }
   }, [id])
-
-  const renderWait = () => {
-    if(id === null){
-      return (
-        <NeedAccount />
-      )
-    } else {
-      return (
-        <p>Loading...</p>
-      )
-    }
-  }
   
   const renderSessions = () => {
     if (sessions.length === 0) {
@@ -58,7 +46,7 @@ const SessionsPage = (props) => {
   }
   return (
     <div>
-      {sessions ? renderSessions() : renderWait()}
+      {sessions ? renderSessions() : renderWait(id)}
     </div>
   )
 };
