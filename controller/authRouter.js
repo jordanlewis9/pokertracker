@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const authController = require('./authController');
 const verify = require('./../middlewares/verifyMiddleware');
-const passportSetup = require('./../model/passportSetup');
 
 
 router.get('/getUser', verify, authController.getUser);

@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const sessionRouter = require('./controller/sessionRouter');
 const authRouter = require('./controller/authRouter');
+const errorController = require('./controller/errorController');
 dotenv.config({ path: './.env' });
 
 const app = express();
@@ -21,6 +22,10 @@ app.use(cors());
 
 app.use('/api/sessions', sessionRouter);
 app.use('/api/auth', authRouter);
+app.use((req, res, next) => {
+  console.log('testing middlewares');
+  next()});
+app.use(errorController);
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {

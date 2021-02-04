@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const pool = require('./../model/database');
+const AppError = require('./../utils/appError');
 
 const tokenForUser = (user) => {
   return jwt.sign({ sub: user.id }, process.env.SECRET, {
@@ -18,30 +19,20 @@ const getUser = (req, res) => {
   })
 }
 
-const signin = (req, res) => {
+const signin = (req, res, next) => {
   const { username, password } = req.body;
   const getUser = `SELECT * FROM users WHERE username = '${username}'`;
   pool.query(getUser, function(err, results){
     if (err) {
-      return res.status(500).json({
-        status: 'failed',
-        message: 'Something went wrong. Please try again later.'
-      })
+      next(new AppError('Something went wrong', 500));
     }
     const user = results[0];
     if (!user) {
-      return res.status(400).json({
-        status: 'failed',
-        message: 'Incorrect username or password'
-      });
+      next(new AppError('Incorrect username or password', 400));
     }
     bcrypt.compare(password, user.password, function(err, result) {
       if (err) {
-        console.log(err.message);
-        return res.status(400).json({
-          status: 'failed',
-          message: 'Incorrect username or password'
-        })
+        next(new AppError('Something went wrong', 500));
       }
       if (result) {
         return res.status(200).send({
@@ -49,35 +40,36 @@ const signin = (req, res) => {
           id: user.id
         });
       } else {
-        console.log('failure')
-        return res.status(400).json({
-          status: 'failed',
-          message: 'Incorrect username or password'
-        });
+        next(new AppError('Incorrect username or password', 400));
       }
     })
   })
 };
 
-const signup = (req, res) => {
+const signup = (req, res, next) => {
   let { username, first_name, last_name, email, password } = req.body;
-  const checkUser = `SELECT * FROM users WHERE username = '${username}' OR email ='${email}'`;
+  const checkUser = `SELECT username, email FROM users WHERE username = '${username}' OR email ='${email}'`;
   pool.query(checkUser, function(err, results) {
-    if (err) throw err;
+    if (err) next(new AppError('Something went wrong', 500));
     if (results[0]) {
-       return res.status(400).send(results);
+       if(results[0].username === username){
+         next(new AppError('Username is already in use. Please choose a different username', 400))
+       } else if (results[0].email === email) {
+         next(new AppError('Email is already in use. Please use a different email', 400))
+       } else {
+         next(new AppError('Something went wrong', 500));
+       }
     }
   });
   const saltRounds = 12;
   bcrypt.genSalt(saltRounds, function(err, salt) {
-    if(err) throw err;
+    if(err) next(new AppError('Something went wrong', 500));
     bcrypt.hash(password, salt, function(err, hash) {
-      if (err) throw err;
+      if (err) next(new AppError('Something went wrong', 500));
       password = hash;
       const newUser = `INSERT INTO users (username, first_name, last_name, email, password, ip) VALUES ('${username}', '${first_name}', '${last_name}', '${email}', '${password}', '127')`;
       pool.query(newUser, function(err, results){
-        if (err) throw err;
-        console.log("====================================================");
+        if (err) next(new AppError('Something went wrong', 500));
         res.status(201).json({
           message: 'success'
         })

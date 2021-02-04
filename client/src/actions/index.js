@@ -71,7 +71,8 @@ export const signIn = (formProps, callback) => async(dispatch) => {
     localStorage.setItem('id', response.data.id);
     callback();
   } catch (err) {
-    console.log(err);
+    console.log(err.response);
+    console.log(err.response.data.message);
   }
 }
 
