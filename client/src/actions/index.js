@@ -71,8 +71,7 @@ export const signIn = (formProps, callback) => async(dispatch) => {
     localStorage.setItem('id', response.data.id);
     callback();
   } catch (err) {
-    console.log(err.response);
-    console.log(err.response.data.message);
+    callback(err.response.data.message);
   }
 }
 
@@ -89,6 +88,7 @@ export const authUser = () => async (dispatch) => {
     const response = await axios.get(`http://localhost:5000/api/auth/getUser?u_id=${id}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
+    console.log(response.data);
     dispatch({
       type: AUTH,
       payload: response.data
@@ -108,7 +108,16 @@ export const signUp = (formProps, callback) => async (dispatch) => {
     });
     callback();
   } catch (err) {
-    console.log(err);
+    callback(err.response.data.message);
+  }
+}
+
+export const handleError = (error) => {
+  console.log('handle')
+  console.log(error)
+  return {
+    type: ERROR,
+    payload: error
   }
 }
 

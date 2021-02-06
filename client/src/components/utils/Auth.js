@@ -11,7 +11,7 @@ const Auth = (props) => {
   }, [authUser]);
 
   const renderAuth = () => {
-    if (!user.email){
+    if (!user){
       return (
         <div>
           <Link to='/signin'><button>Sign In</button></Link>
@@ -34,7 +34,7 @@ const Auth = (props) => {
 };
 
 function mapStateToProps(state){
-  return { user: state.auth.auth };
+  return { user: state.auth };
 }
 
 export default connect(mapStateToProps, actions)(Auth);
