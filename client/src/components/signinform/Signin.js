@@ -8,6 +8,7 @@ import * as actions from '../../actions';
 const Signin = (props) => {
   const [error, setError] = useState(null)
   const handleSignin = (formProps) => {
+    console.log(Date.now())
       props.signIn(formProps, (errorMsg) => {
         if (errorMsg){
           props.handleError(errorMsg);
@@ -20,6 +21,7 @@ const Signin = (props) => {
   }
   const renderError = () => {
     if (error) {
+      console.log(Date.now())
       return (
         <div>
           {error}
@@ -27,7 +29,7 @@ const Signin = (props) => {
       )
     }
   }
-  console.log(props.error)
+  console.log(props)
   return (
     <div>
       <form onSubmit={props.handleSubmit(handleSignin)}>

@@ -8,7 +8,7 @@ const DeleteSession = (props) => {
     e.preventDefault();
     const user = localStorage.getItem('token');
     try {
-      const response = await axios.delete(`http://localhost:5000/api/sessions/delete?session_id=${session_id}&u_id=${props.user.id}`, {
+      const response = await axios.delete(`http://localhost:5000/api/sessions/session?session_id=${session_id}&u_id=${props.user.id}`, {
         headers: { 'Authorization': `Bearer ${user}`}
       });
       console.log(response);

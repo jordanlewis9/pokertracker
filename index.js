@@ -22,9 +22,6 @@ app.use(cors());
 
 app.use('/api/sessions', sessionRouter);
 app.use('/api/auth', authRouter);
-app.use((req, res, next) => {
-  console.log('testing middlewares');
-  next()});
 app.use(errorController);
 
 const PORT = process.env.PORT || 5000

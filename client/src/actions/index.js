@@ -9,7 +9,7 @@ export const newSession = (formProps, user_id, callback) => async (dispatch) => 
   formProps.user_id = user_id;
   const user = localStorage.getItem('token');
   try {
-    await axios.post(`http://localhost:5000/api/sessions/new?u_id=${user_id}`, formProps, {
+    await axios.post(`http://localhost:5000/api/sessions/session?u_id=${user_id}`, formProps, {
       headers: {
         'Authorization': `Bearer ${user}`
       }
@@ -49,6 +49,7 @@ export const getSession = (sessionId, userId) => async (dispatch) => {
     const response = await axios.get(`http://localhost:5000/api/sessions/session?session_id=${sessionId}&u_id=${userId}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
+    console.log(response);
     response.data.time_length = timeIntToStr(response.data.time_length);
     response.data.date_play = response.data.date_play.substring(0, 10);
     dispatch({
@@ -56,7 +57,7 @@ export const getSession = (sessionId, userId) => async (dispatch) => {
       payload: response.data
     });
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 }
 
@@ -123,7 +124,7 @@ export const handleError = (error) => {
 
 export const signOut = () => {
   localStorage.removeItem('token');
-  window.location.replace('/');
+  localStorage.removeItem('id');
   return {
     type: SIGN_OUT,
     payload: null

@@ -4,25 +4,31 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import DeleteSession from './DeleteSession';
+import requireAuth from '../utils/requireAuth';
 import * as actions from '../../actions';
 
 
 const EditSession = (props) => {
   const { getSession, editSession, history, handleSubmit, resetState, user } = props;
-  const { id } = user;
   let { session_id } = useParams();
   useEffect(() => {
     async function fetchData() {
-      await getSession(session_id, id);
+      try {
+        await getSession(session_id, user.id);
+      } catch (err){
+        if(err.response.status === 403){
+          history.push(`/error`, err.response.data.message);
+        }
+      }
     }
   fetchData();
   return () => {
     resetState();
   }
-  }, [session_id, getSession, resetState, id]);
+  }, [session_id, getSession, resetState, user.id, history]);
 
   const onSubmit = (formProps) => {
-    editSession(formProps, session_id, id, () => {
+    editSession(formProps, session_id, user.id, () => {
       history.push('/sessions');
     });
   };
@@ -87,11 +93,10 @@ const EditSession = (props) => {
 }
 
 function mapStateToProps(state){
-  console.log(state);
-  return { initialValues: state.editFormValues.editFormValues, user: state.auth.auth };
+  return { initialValues: state.editFormValues.editFormValues, user: state.auth };
 }
 
 export default compose(
   connect(mapStateToProps, actions),
   reduxForm({ form: 'editSession'})
-)(EditSession);
+)(requireAuth(EditSession));

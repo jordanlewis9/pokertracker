@@ -84,7 +84,7 @@ const ResultsForm = (props) => {
 };
 
 function mapStateToProps(state) {
-  return { user: state.auth.auth };
+  return { user: state.auth };
 };
 
 export default compose(

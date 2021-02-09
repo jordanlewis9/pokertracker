@@ -9,12 +9,13 @@ import GraphPage from './components/graph/GraphPage';
 import EditSession from './components/sessionspage/EditSession';
 import Signin from './components/signinform/Signin';
 import Signup from './components/signupform/Signup';
+import Error from './components/error/Error';
 
 const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
+        <Route component={Header} />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/input-session" component={SessionForm} />
@@ -24,6 +25,7 @@ const App = () => {
             <Route exact path="/signin" component={Signin} />
             <Route exact path="/signup" component={Signup} />
             <Route path="/sessions/edit/:session_id" component={EditSession} />
+            <Route component={Error} />
           </Switch>
       </BrowserRouter>
     </div>

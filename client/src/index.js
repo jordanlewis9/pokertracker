@@ -9,7 +9,7 @@ import reportWebVitals from './reportWebVitals';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducers, {form: null, editFormValues: null, auth: null, error: {error: null}}, composeEnhancers(applyMiddleware(reduxThunk)));
+const store = createStore(reducers, { error: {error: null}}, composeEnhancers(applyMiddleware(reduxThunk)));
 
 ReactDOM.render(
   <Provider store={store}>

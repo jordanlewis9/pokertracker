@@ -11,22 +11,22 @@ const SessionsPage = (props) => {
   const { id } = props.user;
   const [sessions, setSessions] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
-      const user = localStorage.getItem('token');
-        try {
-          const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`, {
-            headers: { 'Authorization': `Bearer ${user}`}
-          });
-          if (response.status === 200){
-            setSessions(response.data);
+      const fetchData = async () => {
+        const user = localStorage.getItem('token');
+          try {
+            const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`, {
+              headers: { 'Authorization': `Bearer ${user}`}
+            });
+            if (response.status === 200){
+              setSessions(response.data);
+            }
+          } catch (err) {
+            throw err;
           }
-        } catch (err) {
-          throw err;
-        }
-    };
-    if (id) {
-      fetchData();
-    }
+      };
+      if(id){
+        fetchData();
+      }
   }, [id])
   
   const renderSessions = () => {
@@ -46,13 +46,13 @@ const SessionsPage = (props) => {
   }
   return (
     <div>
-      {sessions ? renderSessions() : renderWait(id)}
+      {sessions ? renderSessions() : renderWait(localStorage.getItem('id'))}
     </div>
   )
 };
 
 function mapStateToProps(state) {
-  return { user: state.auth.auth };
+  return { user: state.auth };
 }
 
 export default connect(mapStateToProps)(SessionsPage);

@@ -10,8 +10,10 @@ const Auth = (props) => {
     authUser();
   }, [authUser]);
 
+  console.log(props);
+
   const renderAuth = () => {
-    if (!user){
+    if (!user.id){
       return (
         <div>
           <Link to='/signin'><button>Sign In</button></Link>

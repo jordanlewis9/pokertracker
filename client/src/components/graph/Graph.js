@@ -102,13 +102,13 @@ const yAxis = d3.axisLeft(yScale).ticks(6)
 
   return (
     <div className="graph__board">
-      {!graphMade ? renderWait(id) : null}
+      {!graphMade ? renderWait(localStorage.getItem('id')) : null}
     </div>
   )
 };
 
 function mapStateToProps(state) {
-  return { user: state.auth.auth }
+  return { user: state.auth }
 }
 
 export default connect(mapStateToProps)(Graph);
