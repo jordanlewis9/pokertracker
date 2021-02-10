@@ -6,7 +6,6 @@ export const newSession = (formProps, user_id, callback) => async (dispatch) => 
   formProps.time_length = formatToDBTime(formProps.time_length);
   formProps.buyin = parseFloat(formProps.buyin);
   formProps.cashout = parseFloat(formProps.cashout);
-  formProps.user_id = user_id;
   const user = localStorage.getItem('token');
   try {
     await axios.post(`http://localhost:5000/api/sessions/session?u_id=${user_id}`, formProps, {

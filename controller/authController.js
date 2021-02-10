@@ -10,11 +10,15 @@ const tokenForUser = (user) => {
 };
 
 // WILL NEED PROTECTED!
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   const getUser = `SELECT id, username, email, ip FROM users WHERE id = ${req.query.u_id}`;
   pool.query(getUser, function(err, results){
-    if (err) throw err;
-    console.log(results[0]);
+    if (err) {
+      return next(new AppError('Something went wrong', 500));
+    }
+    if(!results[0]){
+      return next(new AppError('User not found', 403))
+    }
     res.status(200).send(results[0]);
   })
 }
@@ -24,15 +28,15 @@ const signin = (req, res, next) => {
   const getUser = `SELECT * FROM users WHERE username = '${username}'`;
   pool.query(getUser, function(err, results){
     if (err) {
-      next(new AppError('Something went wrong', 500));
+      return next(new AppError('Something went wrong', 500));
     }
     const user = results[0];
     if (!user) {
-      next(new AppError('Incorrect username or password', 400));
+       return next(new AppError('Incorrect username or password', 400));
     }
     bcrypt.compare(password, user.password, function(err, result) {
       if (err) {
-        next(new AppError('Something went wrong', 500));
+        return next(new AppError('Something went wrong', 500));
       }
       if (result) {
         return res.status(200).send({
@@ -40,7 +44,7 @@ const signin = (req, res, next) => {
           id: user.id
         });
       } else {
-        next(new AppError('Incorrect username or password', 400));
+        return next(new AppError('Incorrect username or password', 400));
       }
     })
   })
@@ -53,11 +57,11 @@ const signup = (req, res, next) => {
     if (err) next(new AppError('Something went wrong', 500));
     if (results[0]) {
        if(results[0].username === username){
-         next(new AppError('Username is already in use. Please choose a different username', 400))
+         return next(new AppError('Username is already in use. Please choose a different username', 400))
        } else if (results[0].email === email) {
-         next(new AppError('Email is already in use. Please use a different email', 400))
+         return next(new AppError('Email is already in use. Please use a different email', 400))
        } else {
-         next(new AppError('Something went wrong', 500));
+         return next(new AppError('Something went wrong', 500));
        }
     }
   });
@@ -78,13 +82,17 @@ const signup = (req, res, next) => {
   })
 };
 
-const updateUser = (req, res) => {
-  let { username, first_name, last_name, email, password, id } = req.body;
+const updateUser = (req, res, next) => {
+  let { username, first_name, last_name, email, password } = req.body;
   const saltRounds = 12;
   bcrypt.genSalt(saltRounds, function(err, salt) {
-    if(err) throw err;
+    if(err) {
+      return next(new AppError('Something went wrong', 500));
+    }
     bcrypt.hash(password, salt, function(err, hash) {
-      if (err) throw err;
+      if (err) {
+        return next(new AppError('Something went wrong', 500));
+      }
       password = hash;
       let updatedUser = 'UPDATE users SET ';
       updatedUser += `username = '${username}', `;
@@ -92,15 +100,36 @@ const updateUser = (req, res) => {
       updatedUser += `last_name = '${last_name}', `;
       updatedUser += `email = '${email}', `;
       updatedUser += `password = '${password}' `;
-      updatedUser += `WHERE id = ${id}`;
+      updatedUser += `WHERE id = ${req.query.u_id}`;
       pool.query(updatedUser, function(err, results) {
-        if(err) throw err;
+        if(err) {
+          return next(new AppError('Something went wrong', 500));
+        }
+        if(results.affectedRows === 0){
+          return next(new AppError('Incorrect input. Please try again.', 400))
+        }
         res.status(200).json({
-          message: 'success'
+          status: 'success',
+          message: 'User successfully updated'
         })
       })
     })
   })
 };
 
-module.exports = { getUser, signin, signup, updateUser};
+const deleteUser = (req, res, next) => {
+  const deleteUserQuery = `DELETE FROM users WHERE id = ${req.query.u_id}`;
+  pool.query(deleteUserQuery, function(err, results) {
+    if (err) {
+      return next(new AppError('Something went wrong', 500));
+    }
+    if (results.affectedRows === 0){
+      return next(new AppError('Improper credentials', 400));
+    }
+    res.status(204).json({
+      status: 'success'
+    })
+  })
+}
+
+module.exports = { getUser, signin, signup, updateUser, deleteUser };

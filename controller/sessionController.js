@@ -3,7 +3,7 @@ const AppError = require('./../utils/appError');
 
 // Doesn't need error handler for 0 results as user has been verified.
 // 0 results returned mean user has not logged a session yet.
-const getAccumSessions = (req, res) => {
+const getAccumSessions = (req, res, next) => {
   const accumSessions = `SELECT SUM(profit) AS profit, SUM(time_length) AS time_length, COUNT(id) AS num_sessions FROM sessions WHERE user_id = ${req.query.u_id}`;
   pool.query(accumSessions, function(err, results){
     if (err) {
@@ -14,13 +14,17 @@ const getAccumSessions = (req, res) => {
 };
 
 const addNewSession = (req, res, next) => {
-  const { user_id, stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
+  const { stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
   const profit = cashout - buyin;
-  const newSession = `INSERT INTO sessions (user_id, stake, limit_type, game, venue, buyin, cashout, date_play, time_length, profit) VALUES (${user_id}, '${stake}', '${limit_type}', '${game}', '${venue}', ${buyin}, ${cashout}, '${date_play}', ${time_length}, ${profit})`;
+  const newSession = `INSERT INTO sessions (user_id, stake, limit_type, game, venue, buyin, cashout, date_play, time_length, profit) VALUES (${req.query.u_id}, '${stake}', '${limit_type}', '${game}', '${venue}', ${buyin}, ${cashout}, '${date_play}', ${time_length}, ${profit})`;
   pool.query(newSession, function(err, results){
     if (err) {
-      return next(new AppError('Something went wrong', 500));
+      return next(new AppError(err, 500));
     }
+    if(results.affectedRows === 0) {
+      return next(new AppError('Improper inputs. Please try again.', 400))
+    }
+    console.log(results);
     res.status(201).json({
       status: 'success',
       message: 'Session successfully added.'
