@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+const mysql = require('mysql');
 const pool = require('./../model/database');
 const AppError = require('./../utils/appError');
 
@@ -24,9 +25,11 @@ const getUser = (req, res, next) => {
 }
 
 const signin = (req, res, next) => {
-  const { username, password } = req.body;
-  const getUser = `SELECT * FROM users WHERE username = '${username}'`;
-  pool.query(getUser, function(err, results){
+  let { username, password } = req.body;
+  let searchForUser = `SELECT * FROM users WHERE username = ?`;
+  const inserts = [username];
+  searchForUser = mysql.format(searchForUser, inserts);
+  pool.query(searchForUser, function(err, results){
     if (err) {
       return next(new AppError('Something went wrong', 500));
     }
@@ -52,7 +55,9 @@ const signin = (req, res, next) => {
 
 const signup = (req, res, next) => {
   let { username, first_name, last_name, email, password } = req.body;
-  const checkUser = `SELECT username, email FROM users WHERE username = '${username}' OR email ='${email}'`;
+  let checkUser = `SELECT username, email FROM users WHERE username = ? OR email = ?`;
+  const checkUserInserts = [username, email];
+  checkUser = mysql.format(checkUser, checkUserInserts);
   pool.query(checkUser, function(err, results) {
     if (err) next(new AppError('Something went wrong', 500));
     if (results[0]) {
@@ -71,7 +76,9 @@ const signup = (req, res, next) => {
     bcrypt.hash(password, salt, function(err, hash) {
       if (err) next(new AppError('Something went wrong', 500));
       password = hash;
-      const newUser = `INSERT INTO users (username, first_name, last_name, email, password, ip) VALUES ('${username}', '${first_name}', '${last_name}', '${email}', '${password}', '127')`;
+      const newUserInserts = [username, first_name, last_name, email, password];
+      let newUser = `INSERT INTO users (username, first_name, last_name, email, password, ip) VALUES (?, ?, ?, ?, ?, '127')`;
+      newUser = mysql.format(newUser, newUserInserts);
       pool.query(newUser, function(err, results){
         if (err) next(new AppError('Something went wrong', 500));
         res.status(201).json({
@@ -83,25 +90,29 @@ const signup = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
-  let { username, first_name, last_name, email, password } = req.body;
+  let checkUser = `SELECT username, email FROM users WHERE username = ? OR email = ?`;
+  const checkUserInserts = [username, email];
+  checkUser = mysql.format(checkUser, checkUserInserts);
+  pool.query(checkUser, function(err, results){
+    if (err) {
+      return next(new AppError(err, 500));
+    }
+    if (results[0]) {
+      return next(new AppError('Username or email is already in use.', 400));
+    }
+  });
   const saltRounds = 12;
   bcrypt.genSalt(saltRounds, function(err, salt) {
     if(err) {
       return next(new AppError('Something went wrong', 500));
     }
-    bcrypt.hash(password, salt, function(err, hash) {
+    bcrypt.hash(req.body.password, salt, function(err, hash) {
       if (err) {
         return next(new AppError('Something went wrong', 500));
       }
-      password = hash;
-      let updatedUser = 'UPDATE users SET ';
-      updatedUser += `username = '${username}', `;
-      updatedUser += `first_name = '${first_name}', `;
-      updatedUser += `last_name = '${last_name}', `;
-      updatedUser += `email = '${email}', `;
-      updatedUser += `password = '${password}' `;
-      updatedUser += `WHERE id = ${req.query.u_id}`;
-      pool.query(updatedUser, function(err, results) {
+      req.body.password = hash;
+      let updatedUser = `UPDATE users SET ? WHERE id = ${req.query.u_id}`;
+      pool.query(updatedUser, req.body, function(err, results) {
         if(err) {
           return next(new AppError('Something went wrong', 500));
         }

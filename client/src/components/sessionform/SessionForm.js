@@ -13,7 +13,7 @@ const ResultsForm = (props) => {
   }
 
   const renderForm = () => {
-    if (!id) {
+    if (!localStorage.getItem('id')) {
       return (
         <NeedAccount />
       )

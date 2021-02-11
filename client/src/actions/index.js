@@ -85,7 +85,7 @@ export const authUser = () => async (dispatch) => {
     }
   };
   try {
-    const response = await axios.get(`http://localhost:5000/api/auth/getUser?u_id=${id}`, {
+    const response = await axios.get(`http://localhost:5000/api/auth/user?u_id=${id}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
     console.log(response.data);

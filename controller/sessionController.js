@@ -1,3 +1,4 @@
+const mysql = require('mysql');
 const pool = require('./../model/database');
 const AppError = require('./../utils/appError');
 
@@ -14,10 +15,10 @@ const getAccumSessions = (req, res, next) => {
 };
 
 const addNewSession = (req, res, next) => {
-  const { stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
-  const profit = cashout - buyin;
-  const newSession = `INSERT INTO sessions (user_id, stake, limit_type, game, venue, buyin, cashout, date_play, time_length, profit) VALUES (${req.query.u_id}, '${stake}', '${limit_type}', '${game}', '${venue}', ${buyin}, ${cashout}, '${date_play}', ${time_length}, ${profit})`;
-  pool.query(newSession, function(err, results){
+  req.body.user_id = req.query.u_id;
+  req.body.profit = req.body.cashout - req.body.buyin;
+  let newSession = `INSERT INTO sessions SET ?`;
+  pool.query(newSession, req.body, function(err, results){
     if (err) {
       return next(new AppError(err, 500));
     }
@@ -34,13 +35,15 @@ const addNewSession = (req, res, next) => {
 
 
 const deleteSession = (req, res, next) => {
-  const deleteSession = `DELETE FROM sessions WHERE id = ${req.query.session_id} AND user_id = ${req.query.u_id}`;
+  let deleteSession = `DELETE FROM sessions WHERE id = ? AND user_id = ${req.query.u_id}`;
+  const deleteSessionInserts = [req.query.session_id];
+  deleteSession = mysql.format(deleteSession, deleteSessionInserts);
   pool.query(deleteSession, function(err, results){
     if (err) {
       return next(new AppError('Something went wrong', 500));
     }
     if(results.affectedRows === 0){
-      return next(new AppError('Improper session credentials. Please adjust your credentials and try again.', 403));
+      return next(new AppError('Improper session credentials. Please adjust your credentials and try again.', 400));
     }
     res.status(204).json({
       status: 'success'
@@ -49,7 +52,9 @@ const deleteSession = (req, res, next) => {
 }
 
 const getSession = (req, res, next) => {
-  const getSession = `SELECT * FROM sessions WHERE id = ${req.query.session_id} AND user_id = ${req.query.u_id}`;
+  let getSession = `SELECT * FROM sessions WHERE id = ${req.query.session_id} AND user_id = ${req.query.u_id}`;
+  const getSessionInserts = [req.query.session_id];
+  getSession = mysql.format(getSession, getSessionInserts);
   pool.query(getSession, function(err, results){
     if (err) {
       return next(new AppError('Something went wrong', 500));
@@ -62,13 +67,14 @@ const getSession = (req, res, next) => {
 };
 
 const editSession = (req, res, next) => {
-  const { session_id, u_id } = req.query;
-  const { stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
-  const profit = cashout - buyin;
-  let editSession = `UPDATE sessions SET stake = '${stake}', limit_type = '${limit_type}', game = '${game}', venue = '${venue}', `;
-  editSession += `buyin = ${buyin}, cashout = ${cashout}, date_play = '${date_play}', time_length = ${time_length}, profit = ${profit} `;
-  editSession += `WHERE id = ${session_id} AND user_id = ${u_id}`;
-  pool.query(editSession, function(err, results){
+  // const { session_id, u_id } = req.query;
+  // const { stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
+  req.body.profit = req.body.cashout - req.body.buyin;
+  // let editSession = `UPDATE sessions SET stake = '${stake}', limit_type = '${limit_type}', game = '${game}', venue = '${venue}', `;
+  // editSession += `buyin = ${buyin}, cashout = ${cashout}, date_play = '${date_play}', time_length = ${time_length}, profit = ${profit} `;
+  // editSession += `WHERE id = ${session_id} AND user_id = ${req.query.u_id}`;
+  let editSession = `UPDATE sessions SET ? WHERE id = ? AND user_id = ${req.query.u_id}`;
+  pool.query(editSession, [req.body, req.query.session_id], function(err, results){
     if(err) {
       return next(new AppError('Something went wrong', 500));
     }
