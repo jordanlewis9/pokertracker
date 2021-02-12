@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT, SIGN_UP, ERROR } from './types';
+import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT, SIGN_UP, ERROR, GET_USER, EDIT_USER } from './types';
 import { timeIntToStr, formatToDBTime } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps, user_id, callback) => async (dispatch) => {
@@ -85,7 +85,7 @@ export const authUser = () => async (dispatch) => {
     }
   };
   try {
-    const response = await axios.get(`http://localhost:5000/api/auth/user?u_id=${id}`, {
+    const response = await axios.get(`http://localhost:5000/api/users/user?u_id=${id}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
     console.log(response.data);
@@ -109,6 +109,37 @@ export const signUp = (formProps, callback) => async (dispatch) => {
     callback();
   } catch (err) {
     callback(err.response.data.message);
+  }
+}
+
+export const getUser = (userId) => async (dispatch) => {
+  const user = localStorage.getItem('token');
+  try {
+    const response = await axios.get(`http://localhost:5000/api/users/user?u_id=${userId}`, {
+      headers: { 'Authorization': `Bearer ${user}`}
+    })
+    dispatch({
+      type: GET_USER,
+      payload: response.data
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const editUser = (formProps, userId, callback) => async (dispatch) => {
+  const user = localStorage.getItem('token');
+  try {
+    const response = await axios.put(`http://localhost:5000/api/users/user?u_id=${userId}`, {
+      headers: { 'Authorization': `Bearer ${user}`}
+    })
+    dispatch({
+      type: EDIT_USER,
+      payload: formProps
+    });
+    callback();
+  } catch (err) {
+    callback(err.response.data.message)
   }
 }
 

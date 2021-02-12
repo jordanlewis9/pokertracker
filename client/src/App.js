@@ -10,6 +10,7 @@ import EditSession from './components/sessionspage/EditSession';
 import Signin from './components/signinform/Signin';
 import Signup from './components/signupform/Signup';
 import Error from './components/error/Error';
+import EditUser from './components/user/EditUser';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
             <Route exact path="/graph" component={GraphPage} />
             <Route exact path="/signin" component={Signin} />
             <Route exact path="/signup" component={Signup} />
+            <Route exact path="/user" component={EditUser} />
             <Route path="/sessions/edit/:session_id" component={EditSession} />
             <Route component={Error} />
           </Switch>

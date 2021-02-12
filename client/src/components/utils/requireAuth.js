@@ -11,7 +11,7 @@ export default (ChildComponent) => {
     }
 
     shouldNavigateAway() {
-      if (!localStorage.getItem('id')) {
+      if (!localStorage.getItem('id') || !localStorage.getItem('token')) {
         this.props.history.push('/');
       }
     }

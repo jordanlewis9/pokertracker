@@ -27,7 +27,7 @@ const EditSession = (props) => {
   }
   }, [session_id, getSession, resetState, user.id, history]);
 
-  const onSubmit = (formProps) => {
+  const submitForm = (formProps) => {
     editSession(formProps, session_id, user.id, () => {
       history.push('/sessions');
     });
@@ -36,7 +36,7 @@ const EditSession = (props) => {
   return (
     <div>
       <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(submitForm)}>
           <label htmlFor="stake">Stake</label>
           <Field name="stake" component="select">
             <option></option>

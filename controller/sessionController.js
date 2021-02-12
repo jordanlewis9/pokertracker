@@ -20,7 +20,7 @@ const addNewSession = (req, res, next) => {
   let newSession = `INSERT INTO sessions SET ?`;
   pool.query(newSession, req.body, function(err, results){
     if (err) {
-      return next(new AppError(err, 500));
+      return next(new AppError(err.sqlMessage, 500));
     }
     if(results.affectedRows === 0) {
       return next(new AppError('Improper inputs. Please try again.', 400))
@@ -67,16 +67,11 @@ const getSession = (req, res, next) => {
 };
 
 const editSession = (req, res, next) => {
-  // const { session_id, u_id } = req.query;
-  // const { stake, limit_type, game, venue, buyin, cashout, date_play, time_length } = req.body;
   req.body.profit = req.body.cashout - req.body.buyin;
-  // let editSession = `UPDATE sessions SET stake = '${stake}', limit_type = '${limit_type}', game = '${game}', venue = '${venue}', `;
-  // editSession += `buyin = ${buyin}, cashout = ${cashout}, date_play = '${date_play}', time_length = ${time_length}, profit = ${profit} `;
-  // editSession += `WHERE id = ${session_id} AND user_id = ${req.query.u_id}`;
   let editSession = `UPDATE sessions SET ? WHERE id = ? AND user_id = ${req.query.u_id}`;
   pool.query(editSession, [req.body, req.query.session_id], function(err, results){
     if(err) {
-      return next(new AppError('Something went wrong', 500));
+      return next(new AppError(err.sqlMessage, 500));
     }
     if(results.changedRows === 0) {
       return next(new AppError('Improper session credentials. Please adjust your credentials and try again.', 403));
