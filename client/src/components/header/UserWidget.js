@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 import * as actions from '../../actions';
-import SignOutButton from './SignOutButton';
+import UserSignedIn from './UserSignedIn';
+import UserNotSignedIn from './UserNotSignedIn';
+import './userWidgetStyle.css';
 
-const Auth = (props) => {
+const UserWidget = (props) => {
   const { authUser, user } = props;
   useEffect(() => {
     authUser();
@@ -15,14 +16,11 @@ const Auth = (props) => {
   const renderAuth = () => {
     if (!user.id){
       return (
-        <div>
-          <Link to='/signin'><button>Sign In</button></Link>
-          <Link to='/signup'><button>Sign Up</button></Link>
-        </div>
+        <UserNotSignedIn />
       )
     } else {
       return (
-        <SignOutButton username={user.username} />
+        <UserSignedIn username={user.username} />
       )
     }
   }
@@ -39,4 +37,4 @@ function mapStateToProps(state){
   return { user: state.auth };
 }
 
-export default connect(mapStateToProps, actions)(Auth);
+export default connect(mapStateToProps, actions)(UserWidget);

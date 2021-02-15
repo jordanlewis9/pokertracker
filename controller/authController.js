@@ -58,24 +58,25 @@ const signup = (req, res, next) => {
          return next(new AppError('Something went wrong', 500));
        }
     }
-  });
-  const saltRounds = 12;
-  bcrypt.genSalt(saltRounds, function(err, salt) {
-    if(err) next(new AppError('Something went wrong', 500));
-    bcrypt.hash(password, salt, function(err, hash) {
-      if (err) next(new AppError('Something went wrong', 500));
-      password = hash;
-      const newUserInserts = [username, first_name, last_name, email, password];
-      let newUser = `INSERT INTO users (username, first_name, last_name, email, password, ip) VALUES (?, ?, ?, ?, ?, '127')`;
-      newUser = mysql.format(newUser, newUserInserts);
-      pool.query(newUser, function(err, results){
+    const saltRounds = 12;
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+      if(err) next(new AppError('Something went wrong', 500));
+      bcrypt.hash(password, salt, function(err, hash) {
         if (err) next(new AppError('Something went wrong', 500));
-        res.status(201).json({
-          message: 'success'
+        password = hash;
+        const newUserInserts = [username, first_name, last_name, email, password];
+        let newUser = `INSERT INTO users (username, first_name, last_name, email, password, ip) VALUES (?, ?, ?, ?, ?, '127')`;
+        newUser = mysql.format(newUser, newUserInserts);
+        pool.query(newUser, function(err, results){
+          if (err) next(new AppError('Something went wrong', 500));
+          res.status(201).json({
+            message: 'success'
+          })
         })
       })
     })
-  })
+  }
+  );
 };
 
 module.exports = { signin, signup };

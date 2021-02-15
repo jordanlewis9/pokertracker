@@ -11,13 +11,16 @@ import * as actions from '../../actions';
 const EditSession = (props) => {
   const { getSession, editSession, history, handleSubmit, resetState, user } = props;
   let { session_id } = useParams();
+  // dig into reusing this hook with edit user useeffect hook
   useEffect(() => {
     async function fetchData() {
       try {
         await getSession(session_id, user.id);
       } catch (err){
         if(err.response.status === 403){
-          history.push(`/error`, err.response.data.message);
+          history.push('/error', err.response.data.message);
+        } else if (err.response.status === 500){
+          history.push('/error', "An error has occured with your request. Please try again.")
         }
       }
     }

@@ -7,29 +7,37 @@ import * as actions from '../../actions';
 
 const EditUser = (props) => {
   const { user, getUser, history, resetState, handleSubmit, editUser } = props;
+    // dig into reusing this hook with edit session useeffect hook
   useEffect(() => {
     async function fetchData() {
       try {
         await getUser(user.id);
       } catch (err){
-        history.push('/error', err.response.data.message);
+        if(err.response){
+          if(err.response.status === 403){
+            history.push('/error', err.response.data.message);
+          } else if (err.response.status === 500){
+            history.push('/error', "An error has occured with your request. Please try again.")
+          }
+        }
       }
     }
     fetchData();
     return () => {
       resetState();
     }
-  }, [user.id, getUser, history, resetState])
+  }, [user.id])
 
   const submitForm = (formProps) => {
     editUser(formProps, user.id, (errorMsg) => {
       if (errorMsg) {
-        history.push('/error', errorMsg.response.data.message);
+        history.push('/error', errorMsg);
       } else {
         history.push('/');
       }
     })
   }
+  console.log(props.initialValues || null);
 
   return (
     <div>

@@ -1,9 +1,10 @@
 .header__container {
-  background: yellow;
   height: 10vh;
   display: grid;
   grid-template-rows: 100%;
   grid-template-columns: 80% 20%;
+  border: 1px double white;
+  border-top: none;
 }
 
 .nav__container {
@@ -15,4 +16,5 @@
 
 .nav__link {
   text-decoration: none;
+  color: white;
 }

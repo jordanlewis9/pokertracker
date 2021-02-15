@@ -114,6 +114,7 @@ export const signUp = (formProps, callback) => async (dispatch) => {
 
 export const getUser = (userId) => async (dispatch) => {
   const user = localStorage.getItem('token');
+  console.log('from getUser action reducer')
   try {
     const response = await axios.get(`http://localhost:5000/api/users/user?u_id=${userId}`, {
       headers: { 'Authorization': `Bearer ${user}`}
@@ -123,14 +124,14 @@ export const getUser = (userId) => async (dispatch) => {
       payload: response.data
     })
   } catch (err) {
-    console.log(err);
+    throw err
   }
 }
 
 export const editUser = (formProps, userId, callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
   try {
-    const response = await axios.put(`http://localhost:5000/api/users/user?u_id=${userId}`, {
+    const response = await axios.put(`http://localhost:5000/api/users/user?u_id=${userId}`, formProps, {
       headers: { 'Authorization': `Bearer ${user}`}
     })
     dispatch({
