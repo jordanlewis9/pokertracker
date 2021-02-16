@@ -18,3 +18,53 @@
   text-decoration: none;
   color: white;
 }
+
+.nav__toggle-button {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .header__container {
+    height: 10vh;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: 50% 50%;
+    position: relative;
+  }
+
+  .nav__toggle-button {
+    display: block;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nav__toggle--link {
+    color: white;
+    text-decoration: none;
+  }
+
+  .nav__container {
+    display: none;
+  }
+
+  .hide-nav__toggle {
+    visibility: hidden;
+  }
+
+  .nav__container--active {
+    position: absolute;
+    top: 10vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 100;
+    background: white;
+  }
+
+  .nav__link {
+    color: #111111;
+  }
+}
