@@ -11,6 +11,8 @@ import './sessionsPage.css';
 const SessionsPage = (props) => {
   const { id } = props.user;
   const [sessions, setSessions] = useState(null);
+  const [formattedSessions, setFormattedSessions] = useState(null);
+  const [page, setPage] = useState(1);
   useEffect(() => {
       const fetchData = async () => {
         const user = localStorage.getItem('token');
@@ -28,26 +30,62 @@ const SessionsPage = (props) => {
       if(id){
         fetchData();
       }
-  }, [id])
-  
-  const renderSessions = () => {
+  }, [id]);
+
+  if (sessions && !formattedSessions) {
     if (sessions.length === 0) {
       return (
         <UserNoInput page="sessions" />
       )
     }
-    const sessionsRendered = sessions.map(session => {
+    const sessionsFormatted = sessions.map(session => {
       const { stake, limit_type, game, venue, played_date, time_length, profit, id } = session;
       return (
         <Session key={session.id} id={id} stake={stake} limit_type={limit_type} game={game} venue={venue} played_date={played_date}
         time_length={time_length} profit={profit} />
       )
     })
-    return sessionsRendered;
+    setFormattedSessions(sessionsFormatted);
   }
+
+  const renderSessions = (pageNum) => {
+    const displayRangeMin = (pageNum * 10) - 10;
+    const displayRangeMax = pageNum * 10;
+    return formattedSessions.slice(displayRangeMin, displayRangeMax);
+  }
+
+  const pageChange = (e) => {
+    if (e.target.classList.contains('increase')) {
+      setPage(page + 1);
+      window.scrollTo(0, 0);
+    } else {
+      setPage(page - 1);
+      window.scrollTo(0, 0);
+    }
+  }
+
+  const renderBackButton = () => {
+    if (sessions) {
+      const totalSessions = sessions.length;
+      const maxPages = Math.ceil(totalSessions / 10);
+      if (page >= maxPages) {
+        return '';
+      } else {
+        return <button onClick={pageChange} className="session__arrow--button increase"><svg className="session__arrow--right increase" width="10" height="7" xmlns="http://www.w3.org/2000/svg"><path className="increase" d="M1 .799l4 4 4-4" stroke="#ffffff" strokeWidth="2" fill="none" fillRule="evenodd"/></svg></button>
+      }
+    }
+  }
+
   return (
     <div>
-      {sessions ? renderSessions() : renderWait(localStorage.getItem('id'))}
+      <div className="sessions__container--list">
+        {formattedSessions ? renderSessions(page) : renderWait(localStorage.getItem('id'), id)}
+      </div>
+      <div className="sessions__container--buttons">
+        {page <= 1 ? '' : <button onClick={pageChange} className="session__arrow--button decrease"><svg className="session__arrow--left decrease" width="10" height="7" xmlns="http://www.w3.org/2000/svg"><path className="decrease" d="M1 .799l4 4 4-4" stroke="#ffffff" strokeWidth="2" fill="none" fillRule="evenodd"/></svg></button>}
+        <p className="session__page">{page}</p>
+        {renderBackButton()}
+      </div>
     </div>
   )
 };

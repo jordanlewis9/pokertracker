@@ -102,7 +102,7 @@ const yAxis = d3.axisLeft(yScale).ticks(6)
 
   return (
     <div className="graph__board">
-      {!graphMade ? renderWait(localStorage.getItem('id')) : null}
+      {!graphMade ? renderWait(localStorage.getItem('id'), id) : null}
     </div>
   )
 };

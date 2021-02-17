@@ -31,3 +31,39 @@
   grid-template-areas: "game ." "venue profit" "date edit";
   border-bottom: 1px solid white;
 }
+
+.profit {
+  color: #00ff00;
+}
+
+.loss {
+  color: red;
+}
+
+.session__arrow--left {
+  transform: rotate(90deg);
+  color: black;
+}
+
+.session__arrow--right {
+  transform: rotate(270deg);
+  color: black;
+}
+
+.sessions__container--buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.session__page {
+  display: inline;
+}
+
+.session__arrow--button {
+  display: inline;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}

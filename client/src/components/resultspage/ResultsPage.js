@@ -59,7 +59,7 @@ const ResultsPage = (props) => {
 
   return (
     <div>
-      {results ? renderResults() : renderWait(id)}
+      {results ? renderResults() : renderWait(localStorage.getItem('id'), id)}
     </div>
   )
 };
