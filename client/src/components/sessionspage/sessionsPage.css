@@ -1,0 +1,33 @@
+.session__game {
+  grid-area: game;
+}
+
+.session__venue {
+  grid-area: venue;
+  margin: 0;
+}
+
+.session__date {
+  grid-area: date;
+  margin: 0;
+}
+
+.session__profit {
+  grid-area: profit;
+  justify-self: center;
+  margin: 0;
+}
+
+.session__edit--link {
+  grid-area: edit;
+  justify-self: center;
+  margin: 0;
+}
+
+.session__container {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "game ." "venue profit" "date edit";
+  border-bottom: 1px solid white;
+}

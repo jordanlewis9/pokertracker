@@ -12,6 +12,7 @@
 
 .user-widget__greeting {
   margin-top: 0;
+  margin-bottom: 0;
   font-size: 1.25em;
 }
 
@@ -27,6 +28,7 @@
   background: none;
   text-decoration: underline;
   cursor: pointer;
+  font-family: "Titillium Web", sans-serif;
 }
 
 @media (max-width: 800px) {

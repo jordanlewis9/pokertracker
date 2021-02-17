@@ -6,6 +6,7 @@ import axios from 'axios';
 import Session from './Session';
 import UserNoInput from '../utils/UserNoInput';
 import renderWait from '../utils/renderWait';
+import './sessionsPage.css';
 
 const SessionsPage = (props) => {
   const { id } = props.user;
