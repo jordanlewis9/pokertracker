@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
+import history from './createHistory';
 import Header from "./components/header/Header";
 import Home from './components/home/Home';
 import SessionForm from './components/sessionform/SessionForm';
@@ -11,6 +12,7 @@ import Signin from './components/signinform/Signin';
 import Signup from './components/signupform/Signup';
 import Error from './components/error/Error';
 import EditUser from './components/user/EditUser';
+import './main.css';
 
 const App = () => {
   window.addEventListener('click', (e) => {
@@ -30,7 +32,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <Router history={history}>
         <Route component={Header} />
           <Switch>
             <Route exact path="/" component={Home} />
@@ -44,7 +46,7 @@ const App = () => {
             <Route path="/sessions/edit/:session_id" component={EditSession} />
             <Route component={Error} />
           </Switch>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

@@ -5,11 +5,12 @@ const AppError = require('./../utils/appError');
 // Doesn't need error handler for 0 results as user has been verified.
 // 0 results returned mean user has not logged a session yet.
 const getAccumSessions = (req, res, next) => {
-  const accumSessions = `SELECT SUM(profit) AS profit, SUM(time_length) AS time_length, COUNT(id) AS num_sessions FROM sessions WHERE user_id = ${req.query.u_id}`;
+  const accumSessions = `SELECT SUM(profit) AS profit, SUM(time_length) AS time_length, (SELECT COUNT(profit) FROM sessions WHERE user_id = ${req.query.u_id} AND profit > 0) AS num_profit, COUNT(id) AS num_sessions FROM sessions WHERE user_id = ${req.query.u_id}`;
   pool.query(accumSessions, function(err, results){
     if (err) {
       return next(new AppError('Something went wrong', 500));
     }
+    console.log(results[0]);
     res.status(200).send(results[0]);
   })
 };

@@ -1,5 +1,4 @@
 import Graph from './Graph';
-import './graphStyles.css';
 
 const GraphPage = () => {
   return (

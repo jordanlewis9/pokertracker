@@ -34,26 +34,28 @@ const ResultsPage = (props) => {
       )
     }
     return (
-      <table>
-        <tbody>
-          <tr>
-            <td>Total Profit</td>
-            <td>{results.profit < 0 ? `-$${Math.abs(results.profit)}` : `$${results.profit}`}</td>
-          </tr>
-          <tr>
-            <td>Total Time Played</td>
-            <td>{formatResultTime(results.time_length)}</td>
-          </tr>
-          <tr>
-            <td>Profit Per Hour</td>
-            <td>${(results.profit / results.time_length).toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>Profit Per Session</td>
-            <td>${(results.profit / results.num_sessions).toFixed(2)}</td>
-          </tr>
-        </tbody>
-      </table>
+      <section className="results__section">
+        <div className="results__section--row">
+          <div>Total Profit</div>
+          <div>{results.profit < 0 ? `-$${Math.abs(results.profit)}` : `$${results.profit}`}</div>
+        </div>
+        <div className="results__section--row">
+          <div>Total Time Played</div>
+          <div>{formatResultTime(results.time_length)}</div>
+        </div>
+        <div className="results__section--row">
+          <div>Session Winning Percentage</div>
+          <div>{Math.round((results.num_profit / results.num_sessions) * 100)} %</div>
+        </div>
+        <div className="results__section--row">
+          <div>Profit Per Hour</div>
+          <div>${(results.profit / results.time_length).toFixed(2)}</div>
+        </div>
+        <div className="results__section--row">
+          <div>Profit Per Session</div>
+          <div>${(results.profit / results.num_sessions).toFixed(2)}</div>
+        </div>
+      </section>
     )
   }
 

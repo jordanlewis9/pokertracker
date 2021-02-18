@@ -6,7 +6,6 @@ import axios from 'axios';
 import Session from './Session';
 import UserNoInput from '../utils/UserNoInput';
 import renderWait from '../utils/renderWait';
-import './sessionsPage.css';
 
 const SessionsPage = (props) => {
   const { id } = props.user;
@@ -76,16 +75,26 @@ const SessionsPage = (props) => {
     }
   }
 
+  const renderPagination = () => {
+    if (sessions && formattedSessions){
+      return (
+        <div className="sessions__container--buttons">
+        {page <= 1 ? '' : <button onClick={pageChange} className="session__arrow--button decrease"><svg className="session__arrow--left decrease" width="10" height="7" xmlns="http://www.w3.org/2000/svg"><path className="decrease" d="M1 .799l4 4 4-4" stroke="#ffffff" strokeWidth="2" fill="none" fillRule="evenodd"/></svg></button>}
+        <p className="session__page">{page} of {Math.ceil(sessions.length / 10)} pages</p>
+        {renderBackButton()}
+      </div>
+      )
+    } else {
+      return '';
+    }
+  }
+
   return (
     <div>
       <div className="sessions__container--list">
         {formattedSessions ? renderSessions(page) : renderWait(localStorage.getItem('id'), id)}
       </div>
-      <div className="sessions__container--buttons">
-        {page <= 1 ? '' : <button onClick={pageChange} className="session__arrow--button decrease"><svg className="session__arrow--left decrease" width="10" height="7" xmlns="http://www.w3.org/2000/svg"><path className="decrease" d="M1 .799l4 4 4-4" stroke="#ffffff" strokeWidth="2" fill="none" fillRule="evenodd"/></svg></button>}
-        <p className="session__page">{page}</p>
-        {renderBackButton()}
-      </div>
+      {renderPagination()}
     </div>
   )
 };

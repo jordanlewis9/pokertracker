@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import * as actions from '../../actions';
 import UserSignedIn from './UserSignedIn';
 import UserNotSignedIn from './UserNotSignedIn';
-import './userWidgetStyle.css';
 
 const UserWidget = (props) => {
   const { authUser, user } = props;

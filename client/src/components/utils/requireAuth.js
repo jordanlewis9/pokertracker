@@ -1,40 +1,16 @@
-import React, { Component, useEffect } from 'react';
-import { useHistory } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
-export default (ChildComponent) => {
-  // class ComposedComponent extends Component {
-  //   componentDidMount() {
-  //     this.shouldNavigateAway();
-  //   }
-
-  //   componentDidUpdate() {
-  //     this.shouldNavigateAway();
-  //   }
-
-  //   shouldNavigateAway() {
-  //     if (!localStorage.getItem('id') || !localStorage.getItem('token')) {
-  //       this.props.history.replace('/');
-  //     }
-  //   }
-
-  //   render() {
-  //     return <ChildComponent {...this.props} />;
-  //   }
-  // }
-  const ComposedComponent = (props) => {
-    let history = useHistory();
-    useEffect(() => {
+const requireAuth = (ChildComponent) => {
+  const AuthRoute = (props) => {
       if(!localStorage.getItem('id') || !localStorage.getItem('token')){
-        const location = {
-          pathname: '/'
-        };
-        history.replace(location);
+        console.log("no match")
+        return <Redirect to="/" />
+      } else {
+        console.log("there is a match")
+        return <ChildComponent {...props} />
       }
-    })
-    return (
-      <ChildComponent {...props} />
-    )
   }
-
-  return ComposedComponent;
+  return AuthRoute;
 };
+
+export default requireAuth;
