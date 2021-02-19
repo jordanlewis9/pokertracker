@@ -249,6 +249,17 @@ body {
     justify-content: center;
     align-items: space-around;
   }
+
+  .user-widget__greeting {
+    display: none;
+  }
+
+  .user-widget__options--container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-around;
+  }
 }
 
 /* graph styles */
@@ -281,4 +292,181 @@ body {
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid gray;
+}
+
+/* session form */
+
+.session__input--container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.session__stake--container {
+  grid-area: stake;
+}
+
+.session__limit--container {
+  grid-area: limit;
+}
+
+.session__game--container {
+  grid-area: game;
+}
+
+.session__venue--container {
+  grid-area: venue;
+}
+
+.session__buyin--container {
+  grid-area: buyin;
+}
+
+.session__cashout--container {
+  grid-area: cashout;
+}
+
+.session__date--container {
+  grid-area: date;
+}
+
+.session__timelength--container {
+  grid-area: timelength;
+}
+
+.session__form--submit {
+  grid-area: submit;
+}
+
+.session__form--container {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: repeat(4, auto);
+  grid-template-areas: "stake limit game venue" "buyin buyin cashout cashout" "date date timelength timelength" ". submit submit .";
+  gap: 1em 0;
+}
+
+.session__input--text {
+  border: 1px solid gray;
+  border-radius: 4px;
+  color: white;
+  font-family: inherit;
+  background: none;
+  height: 2em;
+}
+
+.session__input--text:selected {
+  color: white;
+  background: none;
+}
+
+::placeholder {
+  color: #3affad;
+  opacity: 0.7;
+  font-style: italic;
+  font-family: inherit;
+}
+
+.session__form--date {
+  border: 1px solid gray;
+  border-radius: 4px;
+  color: #111111;
+  font-family: inherit;
+  background: white;
+  height: 2em;
+}
+
+.session__form--submit {
+  justify-self: center;
+  width: 25%;
+  height: 2em;
+  background: white;
+  border: none;
+  border-radius: 5px;
+  font-family: inherit;
+  color: #111111;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.session__input--select {
+  background: none;
+  color: white;
+  height: 2em;
+  border: 1px solid gray;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+option {
+  background: black;
+  border: 1px solid gray;
+}
+
+.delete__button--container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(4, 25%);
+  padding-top: 4em;
+  width: 100%;
+}
+
+.session__button--delete {
+  grid-column: 2/4;
+  justify-self: center;
+  height: 2em;
+  width: 25%;
+  background: red;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .session__form--container {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: repeat(5, auto);
+    grid-template-areas: "stake limit" "game venue" "buyin cashout" "date timelength" "submit submit";
+  }
+
+  .delete__button--container {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    padding-top: 4em;
+    width: 100%;
+  }
+
+  .session__button--delete {
+    grid-column: 1/3;
+  }
+}
+
+@media (max-width: 400px) {
+  .session__form--container {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(9, auto);
+    grid-template-areas: "stake" "limit" "game" "venue" "buyin" "cashout" "date" "timelength" "submit";
+  }
+
+  .delete__button--container {
+    display: grid;
+    grid-template-columns: 100%;
+    padding-top: 4em;
+    width: 100%;
+  }
+
+  .session__form--submit {
+    width: 90%;
+  }
+
+  .session__button--delete {
+    grid-column: 1/2;
+    width: 90%;
+  }
 }

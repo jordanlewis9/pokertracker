@@ -21,8 +21,8 @@ const DeleteSession = (props) => {
   }
 
   return (
-    <div>
-      <button onClick={(e) => handleDelete(e)}>Delete</button>
+    <div className="delete__button--container">
+      <button onClick={(e) => handleDelete(e)} className="session__button--delete">Delete</button>
     </div>
   )
 }

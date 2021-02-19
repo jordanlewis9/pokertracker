@@ -3,7 +3,7 @@ import { Router, Switch, Route } from 'react-router-dom';
 import history from './createHistory';
 import Header from "./components/header/Header";
 import Home from './components/home/Home';
-import SessionForm from './components/sessionform/SessionForm';
+import NewSession from './components/newsession/NewSession';
 import SessionsPage from './components/sessionspage/SessionsPage';
 import ResultsPage from './components/resultspage/ResultsPage';
 import GraphPage from './components/graph/GraphPage';
@@ -36,7 +36,7 @@ const App = () => {
         <Route component={Header} />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/input-session" component={SessionForm} />
+            <Route exact path="/input-session" component={NewSession} />
             <Route exact path="/sessions" component={SessionsPage} />
             <Route exact path="/results" component={ResultsPage} />
             <Route exact path="/graph" component={GraphPage} />

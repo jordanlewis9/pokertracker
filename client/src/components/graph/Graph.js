@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as d3 from 'd3';
 import axios from 'axios';
 import renderWait from '../utils/renderWait';
+import UserNoInput from '../utils/UserNoInput';
 
 const Graph = (props) => {
   const { id } = props.user;
@@ -14,6 +15,7 @@ const Graph = (props) => {
   useEffect(() => {
     const fetchData = async (id) => {
       const user = localStorage.getItem('token');
+      console.log('useeffect ran')
       try {
         const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`, {
           headers: { 'Authorization': `Bearer ${user}`}
@@ -29,6 +31,10 @@ const Graph = (props) => {
   }, [id]);
   
   if (sessions && !accumProfits) {
+    if (sessions.length === 0) {
+      setSessions(undefined);
+      return;
+    }
     let accumArray = [{ session: 0, profit: 0}, { session: 1, profit: sessions[0].profit}];
     for(let i = 1; i < sessions.length; i++){
       accumArray.push({ session: i + 1, profit: sessions[i].profit + accumArray[i].profit });
@@ -102,7 +108,8 @@ const yAxis = d3.axisLeft(yScale).ticks(6)
 
   return (
     <div className="graph__board">
-      {!graphMade ? renderWait(localStorage.getItem('id'), id) : null}
+      {sessions === undefined ? <UserNoInput page="a graph" /> : null}
+      {!graphMade && sessions !== undefined ? renderWait(localStorage.getItem('id'), id) : null}
     </div>
   )
 };
