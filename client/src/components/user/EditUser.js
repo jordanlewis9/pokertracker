@@ -29,7 +29,7 @@ const EditUser = (props) => {
   console.log(props.initialValues || null);
 
   return (
-    <div>
+    <div className="user__form--container">
       <UserInputForm handleSubmit={handleSubmit} submitForm={submitForm} edit={true} />
     </div>
   )

@@ -42,7 +42,7 @@ body {
   border-bottom: 1px solid gray;
 }
 
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .session__container {
     display: grid;
     grid-template-areas: "game game" "venue profit" "date edit";
@@ -87,7 +87,7 @@ body {
 
 /* header styles */
 .header__container {
-  height: 10vh;
+  height: 4em;
   display: grid;
   grid-template-rows: 100%;
   grid-template-columns: 80% 20%;
@@ -111,9 +111,9 @@ body {
   display: none;
 }
 
-@media (max-width: 800px) {
+@media screen and (max-width: 800px) {
   .header__container {
-    height: 10vh;
+    height: 4em;
     display: grid;
     grid-template-rows: 100%;
     grid-template-columns: 50% 50%;
@@ -227,7 +227,7 @@ body {
   cursor: pointer;
 }
 
-@media (max-width: 800px) {
+@media screen and (max-width: 800px) {
   .user-widget__greeting {
     margin-top: 0;
     margin-bottom: 5px;
@@ -242,7 +242,7 @@ body {
   }
 }
 
-@media (max-width: 400px) {
+@media screen and (max-width: 400px) {
   .notsignedin {
     display: flex;
     flex-direction: column;
@@ -426,7 +426,7 @@ option {
   cursor: pointer;
 }
 
-@media (max-width: 800px) {
+@media screen and (max-width: 800px) {
   .session__form--container {
     display: grid;
     grid-template-columns: repeat(2, 50%);
@@ -446,7 +446,7 @@ option {
   }
 }
 
-@media (max-width: 400px) {
+@media screen and (max-width: 400px) {
   .session__form--container {
     display: grid;
     grid-template-columns: 100%;
@@ -469,4 +469,74 @@ option {
     grid-column: 1/2;
     width: 90%;
   }
+}
+
+/* user input */
+
+.user__form--container {
+  width: 100%;
+  margin-top: 2em;
+}
+
+.user-input__form--container {
+  display: grid;
+  grid-auto-rows: auto;
+  grid-template-rows: 1fr;
+  justify-content: center;
+  gap: 1em;
+}
+
+.user__input--container {
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-columns: 1fr 1fr;
+}
+
+.user-form__input {
+  border: 1px solid gray;
+  border-radius: 4px;
+  color: white;
+  font-family: inherit;
+  background: none;
+  height: 2em;
+}
+
+.user__input--button {
+  justify-self: center;
+  width: 25%;
+  height: 2em;
+  background: white;
+  border: none;
+  border-radius: 5px;
+  font-family: inherit;
+  color: #111111;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 400px) {
+  .user__input--button {
+    width: 50%;
+  }
+}
+
+/* signin form */
+.signin__form--container {
+  width: 100%;
+  margin-top: 4em;
+  display: flex;
+  justify-content: center;
+}
+
+.signin__form {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  grid-template-columns: auto;
+}
+
+.signin-form__input--container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }

@@ -29,13 +29,18 @@ const Signin = (props) => {
       )
     }
   }
-  console.log(props)
   return (
-    <div>
-      <form onSubmit={props.handleSubmit(handleSignin)}>
-        <Field component="input" type="text" name="username" placeholder="Username" />
-        <Field component="input" type="password" name="password" placeholder="Password" />
-        <button>Sign In</button>
+    <div className="signin__form--container">
+      <form onSubmit={props.handleSubmit(handleSignin)} className="signin__form">
+        <div className="signin-form__input--container">
+          <label htmlFor="username">Username</label>
+          <Field component="input" type="text" name="username" className="user-form__input"/>
+        </div>
+        <div className="signin-form__input--container">
+          <label htmlFor="password">Password</label>
+          <Field component="input" type="password" name="password" className="user-form__input"/>
+        </div>
+        <button className="user-form__signin--button">Sign In</button>
       </form>
       {renderError()}
     </div>

@@ -22,7 +22,7 @@ const Signup = (props) => {
     })
   }
   return (
-    <div>
+    <div className="user__form--container">
       <UserInputForm signup={true} handleSubmit={handleSubmit} submitForm={submitForm} />
     </div>
   )
