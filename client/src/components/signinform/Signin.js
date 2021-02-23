@@ -40,9 +40,9 @@ const Signin = (props) => {
           <label htmlFor="password">Password</label>
           <Field component="input" type="password" name="password" className="user-form__input"/>
         </div>
+        <p className="signin__error">{renderError()}</p>
         <button className="user-form__signin--button">Sign In</button>
       </form>
-      {renderError()}
     </div>
   )
 }

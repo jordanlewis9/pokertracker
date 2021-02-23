@@ -24,7 +24,7 @@ const SessionInputForm = (props) => {
           <option value="50_100">50/100</option>
         </Field>
       </div>
-      <div className="session__input--container session__limit--container">
+      <div className="session__input--container session__limit_type--container">
         <label htmlFor="limit_type">Limit</label>
         <Field name="limit_type" id="limit_type" component="select" className="session__input--select session__form--limit">
           <option value="No Limit">No Limit</option>
@@ -60,11 +60,11 @@ const SessionInputForm = (props) => {
         <label htmlFor="cashout">Cash-Out</label>
         <Field name="cashout" id="cashout" component="input" type="text" className="session__input--text session__form--cashout" autoComplete="off"/>
       </div>
-      <div className="session__input--container session__date--container">
+      <div className="session__input--container session__date_play--container">
         <label htmlFor="date_play">Date</label>
         <Field name="date_play" id="date_play" component="input" type="date" className="session__form--date" required pattern="\d{2}\\\d{2}\\\d{4}" />
       </div>
-      <div className="session__input--container session__timelength--container">
+      <div className="session__input--container session__time_length--container">
         <label htmlFor="time_length">Time Length</label>
         <Field name="time_length" id="time_length" component="input" type="text" placeholder="hh:mm" className="session__input--text session__form--timelength" autoComplete="off"/>
       </div>

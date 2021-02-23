@@ -6,7 +6,6 @@ const requireAuth = (ChildComponent) => {
         console.log("no match")
         return <Redirect to="/" />
       } else {
-        console.log("there is a match")
         return <ChildComponent {...props} />
       }
   }

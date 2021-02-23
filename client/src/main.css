@@ -160,6 +160,12 @@ body {
 
   .nav__link {
     color: #111111;
+    width: 100%;
+  }
+
+  .nav__link:hover {
+    color: white;
+    background: #111111;
   }
 }
 
@@ -309,7 +315,7 @@ body {
   grid-area: stake;
 }
 
-.session__limit--container {
+.session__limit_type--container {
   grid-area: limit;
 }
 
@@ -329,11 +335,11 @@ body {
   grid-area: cashout;
 }
 
-.session__date--container {
+.session__date_play--container {
   grid-area: date;
 }
 
-.session__timelength--container {
+.session__time_length--container {
   grid-area: timelength;
 }
 
@@ -427,6 +433,10 @@ option {
   border-radius: 5px;
   border: none;
   cursor: pointer;
+}
+
+.input__error {
+  color: red;
 }
 
 @media screen and (max-width: 800px) {
@@ -534,8 +544,8 @@ option {
 
 .signin__form {
   display: grid;
-  grid-template-rows: repeat(3, auto);
-  grid-template-columns: 200px;
+  grid-auto-rows: auto;
+  grid-template-columns: 225px;
   gap: 2em;
 }
 
@@ -557,4 +567,25 @@ option {
   font-weight: 600;
   font-size: 1em;
   cursor: pointer;
+}
+
+.signin__error {
+  color: red;
+  font-weight: 600;
+}
+
+/* error */
+
+.error__container {
+  margin-top: 4em;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+
+.error__headline {
+  font-weight: 600;
+  font-size: 3em;
+  color: white;
+  letter-spacing: 5px;
 }
