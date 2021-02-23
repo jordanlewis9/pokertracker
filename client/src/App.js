@@ -15,20 +15,6 @@ import EditUser from './components/user/EditUser';
 import './main.css';
 
 const App = () => {
-  window.addEventListener('click', (e) => {
-    const menu = document.querySelector('.nav__container');
-    const navlink = document.querySelector('.nav__toggle-button');
-    if (window.innerWidth < 800) {
-      if (menu.contains(e.target) || navlink.contains(e.target)) {
-        return null;
-      } else {
-        if (menu.classList.contains('nav__container--active') && navlink.classList.contains('hide-nav__toggle')) {
-          menu.classList.remove('nav__container--active');
-          navlink.classList.remove('hide-nav__toggle');
-        }
-      }
-    }
-  })
 
   return (
     <div className="App">
