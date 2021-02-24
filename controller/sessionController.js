@@ -16,8 +16,6 @@ const getAccumSessions = (req, res, next) => {
 };
 
 const addNewSession = (req, res, next) => {
-  req.body.user_id = req.query.u_id;
-  req.body.profit = req.body.cashout - req.body.buyin;
   let newSession = `INSERT INTO sessions SET ?`;
   pool.query(newSession, req.body, function(err, results){
     if (err) {
@@ -68,7 +66,6 @@ const getSession = (req, res, next) => {
 };
 
 const editSession = (req, res, next) => {
-  req.body.profit = req.body.cashout - req.body.buyin;
   let editSession = `UPDATE sessions SET ? WHERE id = ? AND user_id = ${req.query.u_id}`;
   pool.query(editSession, [req.body, req.query.session_id], function(err, results){
     if(err) {

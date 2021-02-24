@@ -2,6 +2,7 @@ import { Field } from 'redux-form';
 
 const SessionInputForm = (props) => {
   const {handleSubmit, submitForm} = props;
+  
   return (
     <form onSubmit={handleSubmit(submitForm)}>
       <div className="session__form--container">

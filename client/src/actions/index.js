@@ -3,9 +3,6 @@ import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIG
 import { timeIntToStr, formatToDBTime } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps, user_id, callback) => async (dispatch) => {
-  formProps.time_length = formatToDBTime(formProps.time_length);
-  formProps.buyin = parseFloat(formProps.buyin);
-  formProps.cashout = parseFloat(formProps.cashout);
   const user = localStorage.getItem('token');
   try {
     await axios.post(`http://localhost:5000/api/sessions/session?u_id=${user_id}`, formProps, {
@@ -25,9 +22,6 @@ export const newSession = (formProps, user_id, callback) => async (dispatch) => 
 
 export const editSession = (formProps, id, userId, callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
-  formProps.time_length = formatToDBTime(formProps.time_length);
-  formProps.buyin = parseFloat(formProps.buyin);
-  formProps.cashout = parseFloat(formProps.cashout);
   try {
     await axios.put(`http://localhost:5000/api/sessions/session?session_id=${id}&u_id=${userId}`, formProps, {
       headers: { 'Authorization': `Bearer ${user}`}

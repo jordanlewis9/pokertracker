@@ -11,15 +11,6 @@ export const formatResultTime = (time) => {
   return `${timeArray[0]} hours ${timeArray[1]} minutes`;
 }
 
-export const formatToDBTime = time => {
-  const formattedLength = time.split(":").map(el => parseInt(el));
-  formattedLength[1] = Math.round(formattedLength[1] * 5 / 3);
-  if(formattedLength[1] < 10){
-    formattedLength[1] = `0${formattedLength[1]}`;
-  }
-  return parseFloat(formattedLength.join("."));
-}
-
 export const timeIntToStr = (time) => {
   let timeArray = time.toString().split('.');
   if (timeArray[1].length === 1) {
