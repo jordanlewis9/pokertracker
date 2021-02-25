@@ -1,5 +1,4 @@
 const formatSessionInputs = (req, res, next) => {
-  console.log('hit')
   for (const value in req.body) {
     if (value === "game") {
       const gameReg = /hi(gh)?(\W|_)lo(w)?/i;

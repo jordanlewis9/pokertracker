@@ -501,7 +501,7 @@ option {
 
 .user__input--container {
   display: grid;
-  grid-template-rows: 100%;
+  grid-auto-rows: auto;
   grid-template-columns: 1fr 1fr;
 }
 

@@ -13,13 +13,18 @@ const sessionValidation = (formProps) => {
       inputContainer.insertAdjacentElement('beforeend', errorMsg);
     }
     if (value === "time_length") {
-      const timeRegex = /^\d{2}:\d{2}$/;
+      const timeRegex = /^\d{2}:[0-5]\d$/;
       if (!timeRegex.test(formProps[value])){
         isError = true;
         inputErrors.push("invalidTimeFormat");
         let inputContainer = document.querySelector(`.session__${value}--container`);
         let errorMsg = document.createElement('p');
-        errorMsg.innerHTML = 'Format must be hh:mm';
+        const greaterThan60Regex = /^\d{2}:\d{2}$/;
+        if (greaterThan60Regex.test(formProps[value])) {
+          errorMsg.innerHTML = 'Minutes cannot be greater than 59';
+        } else {
+          errorMsg.innerHTML = 'Format must be hh:mm';
+        }
         errorMsg.classList.add('input__error');
         errorMsg.classList.add('error__invalidTimeFormat');
         inputContainer.insertAdjacentElement('beforeend', errorMsg);

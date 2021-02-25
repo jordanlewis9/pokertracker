@@ -34,11 +34,11 @@ const Signin = (props) => {
       <form onSubmit={props.handleSubmit(handleSignin)} className="signin__form">
         <div className="signin-form__input--container">
           <label htmlFor="username">Username</label>
-          <Field component="input" type="text" name="username" className="user-form__input"/>
+          <Field component="input" type="text" name="username" className="user-form__input user-form__username"/>
         </div>
         <div className="signin-form__input--container">
           <label htmlFor="password">Password</label>
-          <Field component="input" type="password" name="password" className="user-form__input"/>
+          <Field component="input" type="password" name="password" className="user-form__input user-form__password"/>
         </div>
         <p className="signin__error">{renderError()}</p>
         <button className="user-form__signin--button">Sign In</button>

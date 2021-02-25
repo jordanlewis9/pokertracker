@@ -1,11 +1,10 @@
 const AppError = require('../utils/appError');
 
 const validationMsg = (category) => {
-  return `invalid ${category} format `;
+  return `invalid ${category} format; `;
 }
 
 const sessionValidationMiddleware = (req, res, next) => {
-  console.log('hit')
   req.body.user_id = req.query.u_id;
   let msg = "";
   let fields = ["stake", "limit_type", "game", "venue", "buyin", "cashout", "date_play", "time_length", "user_id"];
@@ -25,15 +24,9 @@ const sessionValidationMiddleware = (req, res, next) => {
         msg += validationMsg(value);
       }
     }
-    if (value === "buyin") {
-      const buyinReg = /^\d{1,6}\.?\d{0,2}?$/;
-      if (!buyinReg.test(req.body.buyin)) {
-        msg += validationMsg(value);
-      }
-    }
-    if (value === "cashout") {
-      const cashoutReg = /^\d{1,6}\.?\d{0,2}?$/;
-      if (!cashoutReg.test(req.body.cashout)) {
+    if (value === "buyin" || value === "cashout") {
+      const currencyReg = /^\d{1,6}\.?\d{0,2}?$/;
+      if (!currencyReg.test(req.body[value])) {
         msg += validationMsg(value);
       }
     }
@@ -44,23 +37,19 @@ const sessionValidationMiddleware = (req, res, next) => {
       }
     }
     if (value === "time_length") {
-      const timeReg = /^\d{2}:\d{2}$/;
+      const timeReg = /^\d{2}:[0-5]\d$/;
       if (!timeReg.test(req.body.time_length)) {
         msg += validationMsg(value);
       }
     }
     fields.splice(fields.indexOf(value), 1);
   }
-  console.log(fields)
   if(fields.length > 0) {
-    msg += `${fields.join(' ')} cannot be omitted `
+    msg += `${fields.join(' ')} cannot be omitted; `
   }
-  console.log(msg)
   if (msg) {
-    console.log('error')
-    return new AppError(400, msg);
+    return next(new AppError(msg, 400));
   } else {
-    console.log('next')
     next();
   }
 }
