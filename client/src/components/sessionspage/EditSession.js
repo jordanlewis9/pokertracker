@@ -8,8 +8,8 @@ import requireAuth from '../utils/requireAuth';
 import SessionInputForm from '../utils/SessionInputForm';
 import getInfo from '../utils/getInfoHook';
 import * as actions from '../../actions';
-import sessionErrorRemoval from '../utils/sessionErrorRemoval';
-import sessionValidation from '../utils/sessionValidation';
+import sessionErrorRemoval from '../utils/validation/sessionErrorRemoval';
+import sessionValidation from '../utils/validation/sessionValidation';
 
 
 const EditSession = (props) => {

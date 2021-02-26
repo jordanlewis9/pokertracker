@@ -17,15 +17,15 @@ const getUser = (req, res, next) => {
 }
 
 const updateUser = (req, res, next) => {
-  let checkUser = `SELECT username, email, id FROM users WHERE username = ? OR email = ?`;
-  const checkUserInserts = [req.body.username, req.body.email];
+  let checkUser = `SELECT email, id FROM users WHERE email = ?`;
+  const checkUserInserts = [req.body.email];
   checkUser = mysql.format(checkUser, checkUserInserts);
   pool.query(checkUser, function(err, results){
     if (err) {
       return next(new AppError(err, 500));
     }
     if (results[0].id !== parseInt(req.query.u_id) || results.length > 1) {
-      return next(new AppError('Username or email is already in use.', 400));
+      return next(new AppError('Email is already in use.', 400));
     }
     const saltRounds = 12;
     bcrypt.genSalt(saltRounds, function(err, salt) {
@@ -37,8 +37,10 @@ const updateUser = (req, res, next) => {
           return next(new AppError('Something went wrong', 500));
         }
         req.body.password = hash;
-        let updatedUser = `UPDATE users SET ? WHERE id = ${req.query.u_id}`;
-        pool.query(updatedUser, req.body, function(err, results) {
+        let updatedUser = `UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ${req.query.u_id}`;
+        const updatedValues = [req.body.first_name, req.body.last_name, req.body.email, req.body.password];
+        updatedUser = mysql.format(updatedUser, updatedValues);
+        pool.query(updatedUser, function(err, results) {
           if(err) {
             return next(new AppError('Something went wrong', 500));
           }

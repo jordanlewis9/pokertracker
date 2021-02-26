@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import NeedAccount from '../utils/NeedAccount';
 import SessionInputForm from '../utils/SessionInputForm';
-import sessionErrorRemoval from '../utils/sessionErrorRemoval';
-import sessionValidation from '../utils/sessionValidation';
+import sessionErrorRemoval from '../utils/validation/sessionErrorRemoval';
+import sessionValidation from '../utils/validation/sessionValidation';
 
 const NewSession = (props) => {
   const { id } = props.user;

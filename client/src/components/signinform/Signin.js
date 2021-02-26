@@ -3,25 +3,34 @@ import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import signinValidation from '../utils/validation/signinValidation';
+import signinErrorRemoval from '../utils/validation/signinErrorRemoval';
 
 
 const Signin = (props) => {
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+  const [errorAreas, setErrorAreas] = useState([]);
+
   const handleSignin = (formProps) => {
-    console.log(Date.now())
-      props.signIn(formProps, (errorMsg) => {
-        if (errorMsg){
-          props.handleError(errorMsg);
-          setError(errorMsg);
-        } else {
-          props.authUser();
-          props.history.push('/');
-        }
+    signinErrorRemoval(errorAreas);
+    setErrorAreas([]);
+    const [isError, inputError] = signinValidation(formProps);
+    if (isError) {
+      setErrorAreas(inputError);
+      return;
+    }
+    props.signIn(formProps, (errorMsg) => {
+      if (errorMsg){
+        setError(errorMsg);
+      } else {
+        props.authUser();
+        props.history.push('/');
+      }
     });
   }
+
   const renderError = () => {
     if (error) {
-      console.log(Date.now())
       return (
         <div>
           {error}
@@ -29,6 +38,7 @@ const Signin = (props) => {
       )
     }
   }
+
   return (
     <div className="signin__form--container">
       <form onSubmit={props.handleSubmit(handleSignin)} className="signin__form">
@@ -47,11 +57,7 @@ const Signin = (props) => {
   )
 }
 
-function mapStateToProps(state) {
-  return { error: state.error.error }
-}
-
 export default compose(
-  connect(mapStateToProps, actions),
-  reduxForm({ form: 'signin' })
+  connect(null, actions),
+  reduxForm({ form: 'signin', initialValues: { username: '', password: '' } })
 )(Signin);

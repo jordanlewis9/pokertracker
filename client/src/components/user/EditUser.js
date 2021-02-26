@@ -6,8 +6,8 @@ import requireAuth from '../utils/requireAuth';
 import * as actions from '../../actions';
 import getInfo from '../utils/getInfoHook';
 import UserInputForm from '../utils/UserInputForm';
-import userValidation from '../utils/userValidation';
-import userErrorRemoval from '../utils/userErrorRemoval';
+import userValidation from '../utils/validation/userValidation';
+import userErrorRemoval from '../utils/validation/userErrorRemoval';
 
 const EditUser = (props) => {
   const { user, getUser, history, resetState, handleSubmit, editUser } = props;
