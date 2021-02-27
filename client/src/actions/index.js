@@ -112,9 +112,15 @@ export const getUser = (userId) => async (dispatch) => {
     const response = await axios.get(`http://localhost:5000/api/users/user?u_id=${userId}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     })
+    const { first_name, last_name, email } = response.data;
+    const payload = {
+      first_name,
+      last_name,
+      email
+    }
     dispatch({
       type: GET_USER,
-      payload: response.data
+      payload
     })
   } catch (err) {
     throw err
@@ -133,7 +139,7 @@ export const editUser = (formProps, userId, callback) => async (dispatch) => {
     });
     callback();
   } catch (err) {
-    callback(err.response.data.message)
+    callback(err.response)
   }
 }
 

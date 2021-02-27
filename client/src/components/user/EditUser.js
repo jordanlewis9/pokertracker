@@ -8,6 +8,7 @@ import getInfo from '../utils/getInfoHook';
 import UserInputForm from '../utils/UserInputForm';
 import userValidation from '../utils/validation/userValidation';
 import userErrorRemoval from '../utils/validation/userErrorRemoval';
+import errorElement from '../utils/errorElement';
 
 const EditUser = (props) => {
   const { user, getUser, history, resetState, handleSubmit, editUser } = props;
@@ -28,15 +29,20 @@ const EditUser = (props) => {
       setErrorAreas(inputErrors);
       return;
     }
-    editUser(formProps, user.id, (errorMsg) => {
-      if (errorMsg) {
-        history.push('/error', errorMsg);
+    editUser(formProps, user.id, (error) => {
+      if (error) {
+        if (error.status === 400) {
+          const emailContainer = document.querySelector('.user-form__email').closest('.user__input--container');
+          emailContainer.insertAdjacentElement('beforeend', errorElement('email', error.data.message));
+          setErrorAreas(["email"]);
+        } else {
+          history.push('/error', error.data.message);
+        }
       } else {
         history.push('/');
       }
     })
   }
-  console.log(props.initialValues || null);
 
   return (
     <div className="user__form--container">
