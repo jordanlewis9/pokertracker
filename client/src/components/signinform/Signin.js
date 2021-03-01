@@ -30,13 +30,7 @@ const Signin = (props) => {
   }
 
   const renderError = () => {
-    if (error) {
-      return (
-        <div>
-          {error}
-        </div>
-      )
-    }
+    if (error) return `${error}`;
   }
 
   return (

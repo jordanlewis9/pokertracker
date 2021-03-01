@@ -22,8 +22,12 @@ const NewSession = (props) => {
       setErrorArea(inputErrors);
       return;
     }
-    props.newSession(formProps, id, () => {
-      props.history.push('/sessions');
+    props.newSession(formProps, id, (error) => {
+      if (error) {
+        props.history.push('/error', error.data.message);
+      } else {
+        props.history.replace('/sessions');
+      }
     });
   }
 

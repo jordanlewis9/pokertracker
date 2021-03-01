@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import * as actions from '../../actions';
 import UserSignedIn from './UserSignedIn';
@@ -6,11 +7,14 @@ import UserNotSignedIn from './UserNotSignedIn';
 
 const UserWidget = (props) => {
   const { authUser, user } = props;
-  useEffect(() => {
-    authUser();
-  }, [authUser]);
 
-  console.log(props);
+  let history = useHistory();
+
+  useEffect(() => {
+    authUser((error) => {
+      history.push('/error', error.data.message);
+    });
+  }, [authUser, history]);
 
   const renderAuth = () => {
     if (!user.id){

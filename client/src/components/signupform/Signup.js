@@ -1,4 +1,4 @@
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -29,7 +29,6 @@ const Signup = (props) => {
     }
     signUp(formProps, (error) => {
       if (error) {
-        console.log(error);
         if (error.status === 500) {
           history.push('/error', error.data.message);
         } else {
@@ -45,8 +44,10 @@ const Signup = (props) => {
         }
       } else {
         signIn({ username: formProps.username, password: formProps.password }, () => {
-          authUser();
-          history.push('/');
+          authUser((error) => {
+            history.push('/error', error.data.message);
+          });
+          history.replace('/');
         })
       }
     })

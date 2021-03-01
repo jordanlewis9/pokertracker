@@ -1,4 +1,4 @@
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { compose } from 'redux';
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
@@ -19,7 +19,7 @@ const EditUser = (props) => {
     return(() => {
       resetState();
     })
-  }, [user.id])
+  }, [user.id, history, resetState, getUser])
 
   const submitForm = (formProps) => {
     userErrorRemoval(errorAreas);
@@ -39,7 +39,7 @@ const EditUser = (props) => {
           history.push('/error', error.data.message);
         }
       } else {
-        history.push('/');
+        history.replace('/user');
       }
     })
   }

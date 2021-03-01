@@ -7,6 +7,7 @@ import UserNoInput from '../utils/UserNoInput';
 
 const Graph = (props) => {
   const { id } = props.user;
+  const { history } = props;
   const [sessions, setSessions] = useState(null);
   const [accumProfits, setAccumProfits] = useState(null);
   const [profitForBuffer, setProfitForBuffer] = useState(null);
@@ -15,20 +16,19 @@ const Graph = (props) => {
   useEffect(() => {
     const fetchData = async (id) => {
       const user = localStorage.getItem('token');
-      console.log('useeffect ran')
       try {
         const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`, {
           headers: { 'Authorization': `Bearer ${user}`}
         });
         setSessions(response.data);
       } catch(err) {
-        console.log(err)
+        history.push('/error', 'There was an error downloading the sessions.')
       }
     };
     if (id) {
       fetchData(id);
     }
-  }, [id]);
+  }, [id, history]);
   
   if (sessions && !accumProfits) {
     if (sessions.length === 0) {
@@ -43,7 +43,6 @@ const Graph = (props) => {
   }
 
   if (accumProfits && !profitForBuffer && typeof profitForBuffer !== "number") {
-    console.log('avgprofit')
     let avgProfit = accumProfits[accumProfits.length - 1].profit / (accumProfits.length - 1);
     if(avgProfit < 0) {
       avgProfit = 0;
@@ -52,7 +51,6 @@ const Graph = (props) => {
   }
 
   if (sessions && accumProfits && typeof profitForBuffer === "number" && !graphMade){
-    console.log("graph called")
     const h = window.innerHeight - (window.innerHeight * 0.2);
     const w = window.innerWidth - (window.innerWidth * 0.05);
     const padding = 40;
@@ -89,8 +87,6 @@ const yAxis = d3.axisLeft(yScale).ticks(6)
         .call(yAxis).call(g => g.selectAll('.tick line').clone()
         .attr("stroke-opacity", d => d === 0 ? 1 : 0.2)
         .attr("x2", w - padding-padding));;
-
-        console.log(line);
 
     svg.append("path")
         .datum(accumProfits)

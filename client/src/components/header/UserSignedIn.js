@@ -9,8 +9,9 @@ const UserSignedIn = (props) => {
 
   const handleSignOut = () => {
     signOut();
-    history.push('/')
+    history.replace('/')
   }
+  
   return (
     <div className="user-widget__container">
       <p className="user-widget__greeting">Welcome, {username}</p>

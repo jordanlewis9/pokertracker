@@ -11,6 +11,7 @@ const sessionValidation = (formProps) => {
       errorMsg.classList.add('input__error');
       errorMsg.classList.add(`error__${value}`);
       inputContainer.insertAdjacentElement('beforeend', errorMsg);
+      continue;
     }
     if (value === "time_length") {
       const timeRegex = /^\d{2}:[0-5]\d$/;

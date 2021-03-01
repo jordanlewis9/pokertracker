@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT, SIGN_UP, ERROR, GET_USER, EDIT_USER } from './types';
-import { timeIntToStr, formatToDBTime } from '../components/utils/timeFunctions';
+import { NEW_SESSION, GET_SESSION, EDIT_SESSION, RESET_STATE, SIGN_IN, AUTH, SIGN_OUT, SIGN_UP, GET_USER, EDIT_USER } from './types';
+import { timeIntToStr } from '../components/utils/timeFunctions';
 
 export const newSession = (formProps, user_id, callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
@@ -16,7 +16,7 @@ export const newSession = (formProps, user_id, callback) => async (dispatch) => 
       payload: formProps
     });
   } catch (err) {
-    console.log(err);
+    callback(err.response);
   }
 };
 
@@ -32,7 +32,7 @@ export const editSession = (formProps, id, userId, callback) => async (dispatch)
       payload: formProps
     });
   } catch (err) {
-    console.log(err);
+    callback(err.response);
   }
 }
 
@@ -42,7 +42,6 @@ export const getSession = (sessionId, userId) => async (dispatch) => {
     const response = await axios.get(`http://localhost:5000/api/sessions/session?session_id=${sessionId}&u_id=${userId}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
-    console.log(response);
     response.data.time_length = timeIntToStr(response.data.time_length);
     response.data.date_play = response.data.date_play.substring(0, 10);
     dispatch({
@@ -69,7 +68,7 @@ export const signIn = (formProps, callback) => async(dispatch) => {
   }
 }
 
-export const authUser = () => async (dispatch) => {
+export const authUser = (callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
   const id = localStorage.getItem('id');
   if (!user) {
@@ -87,7 +86,7 @@ export const authUser = () => async (dispatch) => {
       payload: response.data
     })
   } catch (err) {
-    console.log(err);
+    callback(err.response);
   }
 }
 
@@ -100,14 +99,12 @@ export const signUp = (formProps, callback) => async (dispatch) => {
     });
     callback();
   } catch (err) {
-    console.log('error')
     callback(err.response);
   }
 }
 
 export const getUser = (userId) => async (dispatch) => {
   const user = localStorage.getItem('token');
-  console.log('from getUser action reducer')
   try {
     const response = await axios.get(`http://localhost:5000/api/users/user?u_id=${userId}`, {
       headers: { 'Authorization': `Bearer ${user}`}
@@ -130,7 +127,7 @@ export const getUser = (userId) => async (dispatch) => {
 export const editUser = (formProps, userId, callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
   try {
-    const response = await axios.put(`http://localhost:5000/api/users/user?u_id=${userId}`, formProps, {
+    await axios.put(`http://localhost:5000/api/users/user?u_id=${userId}`, formProps, {
       headers: { 'Authorization': `Bearer ${user}`}
     })
     dispatch({
@@ -140,15 +137,6 @@ export const editUser = (formProps, userId, callback) => async (dispatch) => {
     callback();
   } catch (err) {
     callback(err.response)
-  }
-}
-
-export const handleError = (error) => {
-  console.log('handle')
-  console.log(error)
-  return {
-    type: ERROR,
-    payload: error
   }
 }
 

@@ -1,4 +1,4 @@
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { compose } from 'redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -21,7 +21,7 @@ const EditSession = (props) => {
   return () => {
     resetState();
   }
-  }, [session_id, user.id]);
+  }, [session_id, user.id, getSession, history, resetState]);
 
   const submitForm = (formProps) => {
     sessionErrorRemoval(errorArea);
@@ -31,8 +31,12 @@ const EditSession = (props) => {
       setErrorArea(inputErrors);
       return;
     }
-    editSession(formProps, session_id, user.id, () => {
-      history.push('/sessions');
+    editSession(formProps, session_id, user.id, (error) => {
+      if (error) {
+        history.push('/error', error.data.message);
+      } else {
+        history.replace('/sessions');
+      }
     });
   };
 

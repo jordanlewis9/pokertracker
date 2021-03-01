@@ -10,6 +10,7 @@ import renderWait from '../utils/renderWait';
 const ResultsPage = (props) => {
   const { id } = props.user;
   const [results, setResults] = useState(null);
+  
   useEffect(() => {
       const fetchData = async () => {
         const user = localStorage.getItem('token');
