@@ -56,6 +56,7 @@ const Signup = (props) => {
   return (
     <div className="user__form--container">
       <UserInputForm signup={true} handleSubmit={handleSubmit} submitForm={submitForm} />
+      <p className="user__form--disclaimer">Free users are eligible for up to 10 logged sessions.</p>
     </div>
   )
 }

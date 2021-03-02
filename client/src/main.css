@@ -7,7 +7,7 @@ body {
 }
 
 /* sessionspage */
-.session__game {
+.game {
   grid-area: game;
 }
 
@@ -273,9 +273,9 @@ body {
 
 /* graph styles */
 .graph__container {
-  margin-top: 5vh;
+  margin-top: 2em;
   width: 100%;
-  height: 80vh;
+  height: 100%;
   display: flex;
   justify-content: center;
 }
@@ -288,7 +288,7 @@ body {
 /* results page */
 
 .results__section {
-  margin-top: 5vh;
+  margin-top: 2em;
   display: grid;
   grid-template-rows: repeat(5, auto);
   grid-template-columns: 1fr;
@@ -304,6 +304,11 @@ body {
 }
 
 /* session form */
+
+.new-session__container,
+.edit-session__container {
+  margin-top: 2em;
+}
 
 .session__input--container {
   display: flex;
@@ -489,6 +494,12 @@ option {
 .user__form--container {
   width: 100%;
   margin-top: 2em;
+  text-align: center;
+}
+
+.user__form--disclaimer {
+  width: 100%;
+  margin-top: 4em;
 }
 
 .user-input__form--container {
@@ -497,6 +508,7 @@ option {
   grid-template-rows: 1fr;
   justify-content: center;
   gap: 1em;
+  text-align: initial;
 }
 
 .user__input--container {
@@ -577,7 +589,7 @@ option {
 /* error */
 
 .error__container {
-  margin-top: 4em;
+  margin-top: 2em;
   width: 100%;
   text-align: center;
   color: white;
@@ -588,4 +600,80 @@ option {
   font-size: 3em;
   color: white;
   letter-spacing: 5px;
+}
+
+.userNoInput--container {
+  margin-top: 2em;
+}
+
+.userNoInput--container p:first-child {
+  padding-top: 1em;
+}
+
+.session-need-account--container {
+  margin-top: 2em;
+}
+
+.session-need-account--container p:first-child {
+  padding-top: 1em;
+}
+
+/* delete modal */
+
+.delete__modal--container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete__modal--text-container {
+  background: white;
+  color: #111111;
+  font-weight: 600;
+  border-radius: 3px;
+  padding: 2em;
+  margin-bottom: 4em;
+}
+
+.delete__modal--button-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.delete__modal--cancel-button {
+  height: 2em;
+  background: rgb(192, 192, 192);
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: 80px;
+}
+
+.delete__modal--delete-button {
+  height: 2em;
+  background: red;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: 80px;
+}
+
+/* home */
+
+.home__container {
+  width: 100%;
+  margin-top: 2em;
+  text-align: center;
 }

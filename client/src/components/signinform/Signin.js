@@ -19,11 +19,11 @@ const Signin = (props) => {
       setErrorAreas(inputError);
       return;
     }
-    props.signIn(formProps, (errorMsg) => {
+    props.signIn(formProps, async (errorMsg) => {
       if (errorMsg){
         setError(errorMsg);
       } else {
-        props.authUser();
+        await props.authUser();
         props.history.push('/');
       }
     });

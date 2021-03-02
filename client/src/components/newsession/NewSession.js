@@ -24,7 +24,7 @@ const NewSession = (props) => {
     }
     props.newSession(formProps, id, (error) => {
       if (error) {
-        props.history.push('/error', error.data.message);
+        props.history.replace('/error', error.data.message);
       } else {
         props.history.replace('/sessions');
       }
@@ -38,15 +38,13 @@ const NewSession = (props) => {
       )
     } else {
       return (
-        <div>
-          <SessionInputForm handleSubmit={props.handleSubmit} submitForm={submitForm} />
-        </div>
+        <SessionInputForm handleSubmit={props.handleSubmit} submitForm={submitForm} />
       )
     }
   }
 
   return (
-    <div>
+    <div className="new-session__container">
       {renderForm()}
     </div>
   )

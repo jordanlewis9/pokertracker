@@ -1,7 +1,7 @@
 export const formatResultTime = (time) => {
   let timeArray = time.toString().split('.');
 
-  if (timeArray[1] === '00'){
+  if (timeArray[1] === '00' || !timeArray[1]){
     return `${timeArray[0]} hours 0 minutes`;
   } else if (timeArray[1] === '99'){
     return`${parseInt(timeArray[0]) + 1} hours 0 minutes`;

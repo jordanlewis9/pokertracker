@@ -65,7 +65,7 @@ const signup = (req, res, next) => {
         if (err) next(new AppError('Something went wrong', 500));
         password = hash;
         const newUserInserts = [username, first_name, last_name, email, password];
-        let newUser = `INSERT INTO users (username, first_name, last_name, email, password, ip) VALUES (?, ?, ?, ?, ?, '127')`;
+        let newUser = `INSERT INTO users (username, first_name, last_name, email, password) VALUES (?, ?, ?, ?, ?)`;
         newUser = mysql.format(newUser, newUserInserts);
         pool.query(newUser, function(err, results){
           if (err) next(new AppError('Something went wrong', 500));

@@ -3,7 +3,7 @@ import { compose } from 'redux';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import DeleteSession from './DeleteSession';
+import DeleteModal from './DeleteModal';
 import requireAuth from '../utils/requireAuth';
 import SessionInputForm from '../utils/SessionInputForm';
 import getInfo from '../utils/getInfoHook';
@@ -16,6 +16,8 @@ const EditSession = (props) => {
   const { getSession, editSession, history, handleSubmit, resetState, user } = props;
   let { session_id } = useParams();
   const [errorArea, setErrorArea] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
+
   useEffect(() => {
     getInfo(getSession(session_id, user.id), history);
   return () => {
@@ -41,9 +43,12 @@ const EditSession = (props) => {
   };
 
   return (
-    <div>
+    <div className="edit-session__container">
+      {deleteModal ? <DeleteModal history={history} user={user} session_id={session_id} deleteModal={deleteModal} setDeleteModal={setDeleteModal}/> : null}
       <SessionInputForm submitForm={submitForm} handleSubmit={handleSubmit} />
-      <DeleteSession history={history} user={user} />
+        <div className="delete__button--container">
+          <button onClick={() => setDeleteModal(true)} className="session__button--delete">Delete</button>
+        </div>
     </div>
   )
 }

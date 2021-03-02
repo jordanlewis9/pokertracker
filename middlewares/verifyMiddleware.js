@@ -8,7 +8,6 @@ const verifyUser = (req, res, next) => {
       return next(new AppError('Something went wrong', 500));
     }
     if (parseInt(req.query.u_id) !== decoded.sub) {
-      console.log('here is the error')
       return next(new AppError('Incorrect credentials', 401));
     } else {
       next();

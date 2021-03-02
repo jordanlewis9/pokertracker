@@ -75,7 +75,7 @@ const yAxis = d3.axisLeft(yScale).ticks(6)
     // .attr('width', w)
     // .attr('height', h)
     .attr('viewBox', `0 0 ${w} ${h}`)
-    .style('background', 'lightsteelblue');
+    .style('background', '#111111');
 
     svg.append("g")
         .attr("transform", `translate(0, ${h - padding})`)
@@ -91,7 +91,7 @@ const yAxis = d3.axisLeft(yScale).ticks(6)
     svg.append("path")
         .datum(accumProfits)
         .attr("fill", "none")
-        .attr("stroke", "black")
+        .attr("stroke", "#69ff2e")
         .attr("stroke-width", "1.5")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")

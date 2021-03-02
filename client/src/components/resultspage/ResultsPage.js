@@ -1,6 +1,6 @@
 // Tally all of a user's results
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { formatResultTime } from '../utils/timeFunctions';
@@ -10,7 +10,7 @@ import renderWait from '../utils/renderWait';
 const ResultsPage = (props) => {
   const { id } = props.user;
   const [results, setResults] = useState(null);
-  
+
   useEffect(() => {
       const fetchData = async () => {
         const user = localStorage.getItem('token');
@@ -35,7 +35,7 @@ const ResultsPage = (props) => {
       )
     }
     return (
-      <section className="results__section">
+      <Fragment>
         <div className="results__section--row">
           <div>Total Profit</div>
           <div>{results.profit < 0 ? `-$${Math.abs(results.profit)}` : `$${results.profit}`}</div>
@@ -56,14 +56,14 @@ const ResultsPage = (props) => {
           <div>Profit Per Session</div>
           <div>${(results.profit / results.num_sessions).toFixed(2)}</div>
         </div>
-      </section>
+      </Fragment>
     )
   }
 
   return (
-    <div>
+    <section className="results__section">
       {results ? renderResults() : renderWait(localStorage.getItem('id'), id)}
-    </div>
+    </section>
   )
 };
 

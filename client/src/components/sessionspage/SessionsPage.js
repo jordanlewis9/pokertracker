@@ -12,6 +12,7 @@ const SessionsPage = (props) => {
   const [sessions, setSessions] = useState(null);
   const [formattedSessions, setFormattedSessions] = useState(null);
   const [page, setPage] = useState(1);
+  
   useEffect(() => {
       const fetchData = async () => {
         const user = localStorage.getItem('token');

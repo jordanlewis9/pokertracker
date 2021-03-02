@@ -16,20 +16,33 @@ const getAccumSessions = (req, res, next) => {
 };
 
 const addNewSession = (req, res, next) => {
-  let newSession = `INSERT INTO sessions SET ?`;
-  pool.query(newSession, req.body, function(err, results){
+  console.log(req.body.tier);
+  let checkUser = `SELECT COUNT(id) as num_sessions FROM sessions WHERE user_id = ${req.body.user_id}`;
+  pool.query(checkUser, function(err, results){
     if (err) {
-      return next(new AppError(err.sqlMessage, 500));
+      return next (new AppError(err.sqlMessage, 500))
     }
-    if(results.affectedRows === 0) {
-      return next(new AppError('Improper inputs. Please try again.', 400))
+    console.log(req.body.tier);
+    if (req.body.tier === "Admin" && results[0].num_sessions >= 10) {
+      return next (new AppError('Maximum number of free sessions reached. Subscribe to receive an unlimited number of sessions!', 400));
+    } else {
+      delete req.body.tier;
+      let newSession = `INSERT INTO sessions SET ?`;
+      pool.query(newSession, req.body, function(err, results){
+        if (err) {
+          return next(new AppError(err.sqlMessage, 500));
+        }
+        if(results.affectedRows === 0) {
+          return next(new AppError('Improper inputs. Please try again.', 400))
+        }
+        console.log(results);
+        res.status(201).json({
+          status: 'success',
+          message: 'Session successfully added.'
+        });
+      })
     }
-    console.log(results);
-    res.status(201).json({
-      status: 'success',
-      message: 'Session successfully added.'
-    });
-  })
+  });
 };
 
 
