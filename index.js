@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require("path");
 const sessionRouter = require('./controller/sessionRouter');
 const authRouter = require('./controller/authRouter');
 const userRouter = require('./controller/userRouter');
