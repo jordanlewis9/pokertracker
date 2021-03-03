@@ -21,7 +21,16 @@ app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  })
+}
 
+app.route("/").get(function (req, res) {
+  res.sendFile(process.cwd() + "/views/index.html");
+})
 
 app.use('/api/sessions', sessionRouter);
 app.use('/api/auth', authRouter);
