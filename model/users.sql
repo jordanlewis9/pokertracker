@@ -5,7 +5,7 @@ CREATE TABLE users(
   last_name VARCHAR(40) NOT NULL,
   email VARCHAR(100) NOT NULL,
   password VARCHAR(256) NOT NULL,
-  ip VARCHAR(256) NOT NULL
+  tier VARCHAR(20) NOT NULL DEFAULT = "Free"
 );
 
 INSERT INTO users(username, email, password, ip) VALUES ("jordan", "jlewis2008@live.com", "hi", "127");

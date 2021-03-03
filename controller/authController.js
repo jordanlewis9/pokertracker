@@ -20,6 +20,7 @@ const signin = (req, res, next) => {
   searchForUser = mysql.format(searchForUser, inserts);
   pool.query(searchForUser, function(err, results){
     if (err) {
+      console.log(err)
       return next(new AppError('Something went wrong', 500));
     }
     const user = results[0];
