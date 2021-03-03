@@ -8,6 +8,5 @@ CREATE TABLE sessions(
   buyin DECIMAL(8,2) NOT NULL,
   cashout DECIMAL(8,2) NOT NULL,
   date_play DATE NOT NULL,
-  time_length DECIMAL(4,2) NOT NULL,
-  FOREIGN KEY(user_id) references users(id)
+  time_length DECIMAL(4,2) NOT NULL
 );
