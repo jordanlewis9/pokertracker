@@ -14,6 +14,15 @@ dotenv.config({ path: './.env' });
 const app = express();
 app.use(cors());
 app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'"],
+    styleSrc: ["'self'", "*.googleapis.com"],
+    imgSrc: ["'self'"],
+    fontSrc: ["'self'", "*.googleapis.com", "*.gstatic.com"]
+  }
+}))
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100
