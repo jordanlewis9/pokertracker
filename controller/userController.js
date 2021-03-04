@@ -12,6 +12,7 @@ const getUser = (req, res, next) => {
     if(!results[0]){
       return next(new AppError('User not found', 403))
     }
+    console.log(results[0]);
     res.status(200).send(results[0]);
   })
 }
