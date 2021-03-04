@@ -23,12 +23,6 @@ const DeleteModal = (props) => {
     }
   }
 
-  // if (props.deleteModal) {
-  //   const deleteModalContainer = document.querySelector('.delete__modal--container');
-  //   console.log(deleteModalContainer);
-  //   deleteModalContainer.addEventListener('click', removeModal);
-  // }
-
   return (
     <div className="delete__modal--container" onClick={(e) => removeModal(e)}>
       <div className="delete__modal--text-container">

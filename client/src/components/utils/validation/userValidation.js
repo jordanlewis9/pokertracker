@@ -7,7 +7,6 @@ const errorElement = (element, message) => {
 }
 
 const userValidation = (formProps) => {
-  console.log(formProps);
   let isError = false;
   let inputErrors = [];
 
@@ -54,8 +53,6 @@ const userValidation = (formProps) => {
     email.insertAdjacentElement('beforeend', errorElement('email', "Invalid format"));
   }
   if (Object.keys(formProps).indexOf('username') !== -1) {
-    console.log(Object.keys(formProps));
-    console.log('not here');
     const username = document.querySelector('.user-form__username').closest('.user__input--container');
     if (!formProps.username) {
       isError = true;
@@ -89,7 +86,6 @@ const userValidation = (formProps) => {
       password.insertAdjacentElement('beforeend', errorElement('password', "Password must contain at least 1 uppercase, 1 special character, and 1 number"));
     }
   }
-  console.log(isError)
   return [isError, inputErrors];
 }
 

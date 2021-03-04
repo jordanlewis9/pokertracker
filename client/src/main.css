@@ -376,7 +376,7 @@ body {
 
 .session__input--text:selected {
   color: white;
-  background: none;
+  background: #111111;
 }
 
 ::placeholder {

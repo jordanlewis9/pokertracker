@@ -81,7 +81,6 @@ export const authUser = (callback) => async (dispatch) => {
     const response = await axios.get(`https://poker-session-tracker.herokuapp.com/api/users/user?u_id=${id}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
-    console.log(response);
     dispatch({
       type: AUTH,
       payload: response.data

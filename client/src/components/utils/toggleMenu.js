@@ -2,7 +2,6 @@ const toggleMenu = (e) => {
   const navbar = document.querySelector('.nav__container');
   const navlink = document.querySelector('.nav__toggle-button');
   const handleWindowResize = (event) => {
-    console.log("on")
     if(event.target.innerWidth > 800) {
       navlink.classList.remove('hide-nav__toggle');
       navbar.classList.remove('nav__container--active');

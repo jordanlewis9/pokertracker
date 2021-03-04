@@ -13,8 +13,6 @@ const NewSession = (props) => {
   const [errorArea, setErrorArea] = useState([]);
 
   const submitForm = (formProps) => {
-    console.log('submitted');
-    console.log(formProps);
     sessionErrorRemoval(errorArea);
     setErrorArea([]);
     const [isError, inputErrors] = sessionValidation(formProps);

@@ -2,7 +2,6 @@ import { Redirect } from 'react-router-dom'
 
 const errorPageCheck = (ChildComponent) => {
   const checkMessage = (props) => {
-    console.log(props);
     if(!props.location.message && !props.location.state) {
       return <Redirect to="/" />
     } else {
