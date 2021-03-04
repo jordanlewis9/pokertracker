@@ -6,7 +6,7 @@ const DeleteModal = (props) => {
     e.preventDefault();
     const user = localStorage.getItem('token');
     try {
-      const response = await axios.delete(`http://localhost:5000/api/sessions/session?session_id=${props.session_id}&u_id=${props.user.id}`, {
+      const response = await axios.delete(`https://poker-session-tracker.herokuapp.com/api/sessions/session?session_id=${props.session_id}&u_id=${props.user.id}`, {
         headers: { 'Authorization': `Bearer ${user}`}
       });
       if (response.status === 204){

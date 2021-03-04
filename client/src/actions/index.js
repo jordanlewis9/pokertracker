@@ -5,7 +5,7 @@ import { timeIntToStr } from '../components/utils/timeFunctions';
 export const newSession = (formProps, user_id, callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
   try {
-    await axios.post(`http://localhost:5000/api/sessions/session?u_id=${user_id}`, formProps, {
+    await axios.post(`https://poker-session-tracker.herokuapp.com/api/sessions/session?u_id=${user_id}`, formProps, {
       headers: {
         'Authorization': `Bearer ${user}`
       }
@@ -23,7 +23,7 @@ export const newSession = (formProps, user_id, callback) => async (dispatch) => 
 export const editSession = (formProps, id, userId, callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
   try {
-    await axios.put(`http://localhost:5000/api/sessions/session?session_id=${id}&u_id=${userId}`, formProps, {
+    await axios.put(`https://poker-session-tracker.herokuapp.com/api/sessions/session?session_id=${id}&u_id=${userId}`, formProps, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
     callback();
@@ -39,7 +39,7 @@ export const editSession = (formProps, id, userId, callback) => async (dispatch)
 export const getSession = (sessionId, userId) => async (dispatch) => {
   const user = localStorage.getItem('token');
   try {
-    const response = await axios.get(`http://localhost:5000/api/sessions/session?session_id=${sessionId}&u_id=${userId}`, {
+    const response = await axios.get(`https://poker-session-tracker.herokuapp.com/api/sessions/session?session_id=${sessionId}&u_id=${userId}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
     response.data.time_length = timeIntToStr(response.data.time_length);
@@ -55,7 +55,7 @@ export const getSession = (sessionId, userId) => async (dispatch) => {
 
 export const signIn = (formProps, callback) => async(dispatch) => {
   try {
-    const response = await axios.post('http://localhost:5000/api/auth/signin', formProps);
+    const response = await axios.post('https://poker-session-tracker.herokuapp.com/api/auth/signin', formProps);
     dispatch({
       type: SIGN_IN,
       payload: formProps
@@ -78,7 +78,7 @@ export const authUser = (callback) => async (dispatch) => {
     }
   };
   try {
-    const response = await axios.get(`http://localhost:5000/api/users/user?u_id=${id}`, {
+    const response = await axios.get(`https://poker-session-tracker.herokuapp.com/api/users/user?u_id=${id}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     });
     dispatch({
@@ -92,7 +92,7 @@ export const authUser = (callback) => async (dispatch) => {
 
 export const signUp = (formProps, callback) => async (dispatch) => {
   try {
-    await axios.post(`http://localhost:5000/api/auth/signup`, formProps);
+    await axios.post(`https://poker-session-tracker.herokuapp.com/api/auth/signup`, formProps);
     dispatch({
       type: SIGN_UP,
       payload: formProps
@@ -106,7 +106,7 @@ export const signUp = (formProps, callback) => async (dispatch) => {
 export const getUser = (userId) => async (dispatch) => {
   const user = localStorage.getItem('token');
   try {
-    const response = await axios.get(`http://localhost:5000/api/users/user?u_id=${userId}`, {
+    const response = await axios.get(`https://poker-session-tracker.herokuapp.com/api/users/user?u_id=${userId}`, {
       headers: { 'Authorization': `Bearer ${user}`}
     })
     const { first_name, last_name, email } = response.data;
@@ -127,7 +127,7 @@ export const getUser = (userId) => async (dispatch) => {
 export const editUser = (formProps, userId, callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
   try {
-    await axios.put(`http://localhost:5000/api/users/user?u_id=${userId}`, formProps, {
+    await axios.put(`https://poker-session-tracker.herokuapp.com/api/users/user?u_id=${userId}`, formProps, {
       headers: { 'Authorization': `Bearer ${user}`}
     })
     dispatch({

@@ -17,7 +17,7 @@ const SessionsPage = (props) => {
       const fetchData = async () => {
         const user = localStorage.getItem('token');
           try {
-            const response = await axios.get(`http://localhost:5000/api/sessions/allSessions?u_id=${id}`, {
+            const response = await axios.get(`https://poker-session-tracker.herokuapp.com/api/sessions/allSessions?u_id=${id}`, {
               headers: { 'Authorization': `Bearer ${user}`}
             });
             if (response.status === 200){
