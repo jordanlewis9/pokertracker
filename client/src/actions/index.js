@@ -74,7 +74,7 @@ export const authUser = (callback) => async (dispatch) => {
   if (!user) {
     return {
       type: AUTH,
-      payload: null
+      payload: "I am a teapt"
     }
   };
   try {
