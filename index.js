@@ -31,23 +31,23 @@ app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve(__dirname, "client/build")));
-}
 
-// app.route("/").get(function (req, res) {
-//   res.sendFile(process.cwd() + "/views/index.html");
-// })
+app.use("/public", express.static(process.cwd() + "/public"));
 
 app.use('/api/sessions', sessionRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  })
+}
 
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-//   })
-// }
+app.route("/").get(function (req, res) {
+  res.sendFile(process.cwd() + "/views/index.html");
+})
 
 app.use(errorController);
 
