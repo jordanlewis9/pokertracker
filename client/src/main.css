@@ -95,6 +95,11 @@ body {
   border-top: none;
 }
 
+.header__arrow {
+  height: 7px;
+  width: 10px;
+}
+
 .nav__container {
   display: flex;
   justify-content: space-around;
