@@ -374,11 +374,6 @@ body {
   height: 2em;
 }
 
-.session__input--text:selected {
-  color: white;
-  background: #111111;
-}
-
 ::placeholder {
   color: #3affad;
   opacity: 0.7;

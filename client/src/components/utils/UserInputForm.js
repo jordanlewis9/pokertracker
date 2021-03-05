@@ -7,7 +7,7 @@ const UserInputForm = (props) => {
       return (
           <div className="user__input--container">
             <label htmlFor="username">Username</label>
-            <Field component="input" type="text" name="username" autoComplete="off" className="user-form__input user-form__username"/>
+            <Field component="input" id="username" type="text" name="username" autoComplete="off" className="user-form__input user-form__username"/>
           </div>
       )
     } 
@@ -19,19 +19,19 @@ const UserInputForm = (props) => {
         {renderUsernameInput()}
         <div className="user__input--container">
           <label htmlFor="first_name">First Name</label>
-          <Field component="input" type="text" name="first_name" autoComplete="off" className="user-form__input user-form__first_name"/>
+          <Field component="input" id="first_name" type="text" name="first_name" autoComplete="off" className="user-form__input user-form__first_name"/>
         </div>
         <div className="user__input--container">
           <label htmlFor="last_name">Last Name</label>
-          <Field component="input" type="text" name="last_name" autoComplete="off" className="user-form__input user-form__last_name"/>
+          <Field component="input" id="last_name" type="text" name="last_name" autoComplete="off" className="user-form__input user-form__last_name"/>
         </div>
         <div className="user__input--container">
           <label htmlFor="email">Email</label>
-          <Field component="input" type="email" name="email" autoComplete="off" className="user-form__input user-form__email"/>
+          <Field component="input" id="email" type="email" name="email" autoComplete="off" className="user-form__input user-form__email"/>
         </div>
         <div className="user__input--container">
           <label htmlFor="password">Password</label>
-          <Field component="input" type="password" name="password" autoComplete="off" className="user-form__input user-form__password"/>
+          <Field component="input" id="password" type="password" name="password" autoComplete="off" className="user-form__input user-form__password"/>
         </div>
         <button className="user__input--button">{props.signup ? "Sign Up" : "Edit"}</button>
       </form>
