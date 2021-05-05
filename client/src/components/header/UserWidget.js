@@ -12,7 +12,11 @@ const UserWidget = (props) => {
 
   useEffect(() => {
     authUser((error) => {
-      history.push('/error', error.data.message);
+      if (history.location.pathname === "/") {
+        return null;
+      } else {
+        history.push('/error', error.data.message);
+      }
     });
   }, [authUser, history]);
 

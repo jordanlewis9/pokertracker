@@ -6,11 +6,9 @@ const AppError = require('./../utils/appError');
 
 const tokenForUser = (user) => {
   return jwt.sign({ sub: user.id }, process.env.SECRET, {
-    expiresIn: '24h'
+    expiresIn: '30d'
   })
 };
-
-// WILL NEED PROTECTED!
 
 
 const signin = (req, res, next) => {

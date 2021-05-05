@@ -6,7 +6,7 @@ const Error = (props) => {
   return (
     <div className="error__container">
       <span className="error__headline">Error</span>
-      <p>{message}. Click <Link to={`${props.pathurl}`}>here</Link> to return.</p>
+      { message.includes("expired") ? <p>{message}. Click <Link to='/signin'>here</Link> to login again.</p> : <p>{message}. Click <Link to={`${props.pathurl}`}>here</Link> to return.</p>}
     </div>
   )
 }
