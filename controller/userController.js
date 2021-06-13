@@ -18,6 +18,9 @@ const getUser = (req, res, next) => {
 }
 
 const updateUser = (req, res, next) => {
+  if (req.query.u_id == 34) {
+    return next(new AppError('Demo users cannot modify this profile', 403));
+  }
   let checkUser = `SELECT email, id FROM users WHERE email = ?`;
   const checkUserInserts = [req.body.email];
   checkUser = mysql.format(checkUser, checkUserInserts);
@@ -59,6 +62,9 @@ const updateUser = (req, res, next) => {
 };
 
 const deleteUser = (req, res, next) => {
+  if (req.query.u_id == 34) {
+    return next(new AppError('Demo users cannot modify this profile', 403));
+  }
   const deleteUserQuery = `DELETE FROM users WHERE id = ${req.query.u_id}`;
   pool.query(deleteUserQuery, function(err, results) {
     if (err) {

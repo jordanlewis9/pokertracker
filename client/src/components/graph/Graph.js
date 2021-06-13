@@ -17,7 +17,7 @@ const Graph = (props) => {
     const fetchData = async (id) => {
       const user = localStorage.getItem('token');
       try {
-        const response = await axios.get(`https://poker-session-tracker.herokuapp.com/api/sessions/allSessions?u_id=${id}`, {
+        const response = await axios.get(`https://poker-session-tracker.herokuapp.com/api/sessions/allSessions?u_id=${id}&order_by=ASC`, {
           headers: { 'Authorization': `Bearer ${user}`}
         });
         setSessions(response.data);

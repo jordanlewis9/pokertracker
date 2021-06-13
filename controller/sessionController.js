@@ -92,8 +92,9 @@ const editSession = (req, res, next) => {
 
 // Doesn't need error handler for 0 results as user has been verified.
 // 0 results returned mean user has not logged a session yet.
-const getAllSessions = (req, res) => {
-  const getSessions = `SELECT *, DATE_FORMAT(date_play, '%m/%d/%Y') as played_date FROM sessions WHERE user_id = ${req.query.u_id} ORDER BY date_play`;
+const getAllSessions = (req, res, next) => {
+  req.query.order_by = req.query.order_by ?? "ASC";
+  const getSessions = `SELECT *, DATE_FORMAT(date_play, '%m/%d/%Y') as played_date FROM sessions WHERE user_id = ${req.query.u_id} ORDER BY date_play ${req.query.order_by}`;
   pool.query(getSessions, function(err, results){
     if (err) {
       return next(new AppError('Something went wrong. Please try again.', 500));

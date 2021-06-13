@@ -17,6 +17,7 @@ const SessionInputForm = (props) => {
           <option value="0.25_0.50">0.25/0.50</option>
           <option value="0.50_1.00">0.50/1</option>
           <option value="1_2">1/2</option>
+          <option value="1_3">1/3</option>
           <option value="2_5">2/5</option>
           <option value="5_10">5/10</option>
           <option value="10_20">10/20</option>

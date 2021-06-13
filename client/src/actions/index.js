@@ -53,7 +53,7 @@ export const getSession = (sessionId, userId) => async (dispatch) => {
   }
 }
 
-export const signIn = (formProps, callback) => async(dispatch) => {
+export const signIn = (formProps, callback) => async (dispatch) => {
   try {
     const response = await axios.post('https://poker-session-tracker.herokuapp.com/api/auth/signin', formProps);
     dispatch({
@@ -62,7 +62,11 @@ export const signIn = (formProps, callback) => async(dispatch) => {
     });
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('id', response.data.id);
-    callback();
+    if (response.data.id === 34) {
+      callback(dispatch);
+    } else {
+      callback();
+    }
   } catch (err) {
     callback(err.response.data.message);
   }
@@ -71,7 +75,11 @@ export const signIn = (formProps, callback) => async(dispatch) => {
 export const authUser = (callback) => async (dispatch) => {
   const user = localStorage.getItem('token');
   const id = localStorage.getItem('id');
-  if (!user) {
+  const hasUserLoggedOutOfDemo = localStorage.getItem('hasUserLoggedOut');
+  if (!user && !hasUserLoggedOutOfDemo) {
+    localStorage.setItem('hasUserLoggedOut', '');
+    return dispatch(signIn({ 'username': 'demo', 'password': 'Thisisademo1!'}, authUser((error) => console.log(error))));
+  } else if (!user) {
     return {
       type: AUTH,
       payload: null
@@ -86,7 +94,7 @@ export const authUser = (callback) => async (dispatch) => {
       payload: response.data
     })
   } catch (err) {
-    callback(err.response);
+    callback(err);
   }
 }
 
@@ -143,6 +151,7 @@ export const editUser = (formProps, userId, callback) => async (dispatch) => {
 export const signOut = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('id');
+  localStorage.setItem('hasUserLoggedOut', 'true');
   return {
     type: SIGN_OUT,
     payload: null
