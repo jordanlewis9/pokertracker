@@ -28,8 +28,8 @@ const limiter = rateLimit({
   max: 100
 });
 app.use(limiter);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/public", express.static(process.cwd() + "/public"));

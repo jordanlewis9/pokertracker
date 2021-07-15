@@ -68,6 +68,7 @@ export const signIn = (formProps, callback) => async (dispatch) => {
       callback();
     }
   } catch (err) {
+    console.log(err);
     callback(err.response.data.message);
   }
 }
